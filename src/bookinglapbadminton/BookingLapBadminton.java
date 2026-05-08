@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
 package bookinglapbadminton;
+import View.UserBookingView;
 
 /**
  *
@@ -15,6 +16,7 @@ public class BookingLapBadminton {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+         new UserBookingView().setVisible(true);
     }
     
 }
