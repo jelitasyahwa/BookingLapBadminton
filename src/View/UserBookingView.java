@@ -29,7 +29,7 @@ public class UserBookingView extends javax.swing.JFrame {
     }
     
     // method jam mulai
-        private void loadJamMulai() {
+    private void loadJamMulai() {
 
         cbJamMulai.removeAllItems();
 
@@ -62,7 +62,6 @@ public class UserBookingView extends javax.swing.JFrame {
         cbJamSelesai.removeAllItems();
 
         String[] jam = {
-            "07:00",
             "08:00",
             "09:00",
             "10:00",
@@ -76,181 +75,227 @@ public class UserBookingView extends javax.swing.JFrame {
             "18:00",
             "19:00",
             "20:00",
-            "21:00"
+            "21:00",
+            "22:00"
         };
 
-        for (int i = mulaiIndex + 1; i < jam.length; i++) {
+        for (int i = mulaiIndex; i < jam.length; i++) {
             cbJamSelesai.addItem(jam[i]);
         }
-}
-       // method lapangan
-       private void loadLapangan() {
+    }
+    
+    // method lapangan
+    private void loadLapangan() {
 
         try {
 
-        cbLapangan.removeAllItems();
+            cbLapangan.removeAllItems();
 
-        ResultSet rs = DBLapangan.getLapangan();
+            ResultSet rs = DBLapangan.getLapangan();
 
-        while (rs.next()) {
+            while (rs.next()) {
 
-            cbLapangan.addItem(rs.getString("nama_lapangan"));
+                cbLapangan.addItem(rs.getString("nama_lapangan"));
+
+            }
+
+        } catch (Exception e) {
+
+            System.out.println("Gagal load lapangan");
+            System.out.println(e);
 
         }
-
-    } catch (Exception e) {
-
-        System.out.println("Gagal load lapangan");
-        System.out.println(e);
-
     }
-}
-       // method jadwal
-        private void loadJadwal() {
+    
+    // method jadwal
+    private void loadJadwal() {
+            DefaultTableModel model = new DefaultTableModel() {
 
-    DefaultTableModel model = new DefaultTableModel();
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
 
-    model.addColumn("Jam");
-    model.addColumn("Lapangan A");
-    model.addColumn("Lapangan B");
-    model.addColumn("Lapangan VIP");
+        model.addColumn("Jam");
+        model.addColumn("Lapangan A");
+        model.addColumn("Lapangan B");
+        model.addColumn("Lapangan VIP");
 
-    model.addRow(new Object[]{
-        "07:00 - 08:00",
-        "Tersedia",
-        "Tersedia",
-        "Terisi"
-    });
+        for (int jam = 7; jam < 22; jam++) {
 
-    model.addRow(new Object[]{
-        "08:00 - 09:00",
-        "Terisi",
-        "Tersedia",
-        "Tersedia"
-    });
+            String jamMulai = String.format("%02d:00", jam);
+            String jamSelesai = String.format("%02d:00", jam + 1);
 
-    model.addRow(new Object[]{
-        "09:00 - 10:00",
-        "Tersedia",
-        "Terisi",
-        "Tersedia"
-    });
+            String waktu = jamMulai + " - " + jamSelesai;
 
-    tableJadwal.setModel(model);
+            String tanggal = jTextFieldTanggal.getText();
 
-}
-        // method total
-        private void hitungTotal() {
+            String statusA = "Tersedia";
+            String statusB = "Tersedia";
+            String statusVIP = "Tersedia";
 
-    try {
+            if (DBBooking.cekBooking(1, tanggal, jamMulai)) {
+                statusA = "Terisi";
+            }
 
-        String jamMulai = cbJamMulai.getSelectedItem().toString();
-        String jamSelesai = cbJamSelesai.getSelectedItem().toString();
+            if (DBBooking.cekBooking(2, tanggal, jamMulai)) {
+                statusB = "Terisi";
+            }
 
-        int mulai = Integer.parseInt(jamMulai.substring(0, 2));
-        int selesai = Integer.parseInt(jamSelesai.substring(0, 2));
+            if (DBBooking.cekBooking(3, tanggal, jamMulai)) {
+                statusVIP = "Terisi";
+            }
 
-        int durasi = selesai - mulai;
-
-        int hargaPerJam = 50000;
-
-        String lapangan = cbLapangan.getSelectedItem().toString();
-
-        if (lapangan.equals("Lapangan VIP")) {
-            hargaPerJam = 100000;
+            model.addRow(new Object[]{
+                waktu,
+                statusA,
+                statusB,
+                statusVIP
+            });
         }
+        tableJadwal.setModel(model);
 
-        int total = durasi * hargaPerJam;
+    }   
 
-        TotalHarga.setText("Rp " + total);
+    // method total harga
+    private void hitungTotal() {
 
-    } catch (Exception e) {
+        try {
+            
+            if (cbJamMulai.getSelectedItem() == null ||
+                cbJamSelesai.getSelectedItem() == null) {
+                return;
+            }
+            
+            String jamMulai = cbJamMulai.getSelectedItem().toString();
+            String jamSelesai = cbJamSelesai.getSelectedItem().toString();
 
-        System.out.println(e);
+            int mulai = Integer.parseInt(jamMulai.substring(0, 2));
+            int selesai = Integer.parseInt(jamSelesai.substring(0, 2));
 
+            int durasi = selesai - mulai;
+
+            int hargaPerJam = 50000;
+
+            String lapangan = cbLapangan.getSelectedItem().toString();
+
+            if (lapangan.equals("Lapangan VIP")) {
+                hargaPerJam = 100000;
+            }
+
+            int total = durasi * hargaPerJam;
+
+            // tampilkan ke label
+            lblHargaPerJam.setText("Rp " + hargaPerJam);
+
+            lblDurasi.setText(durasi + " jam");
+
+            lblTotalHarga.setText("Rp " + total);
+
+        } catch (Exception e) {
+
+            System.out.println(e);
+
+        }
     }
-}
-        // method booking
-        private void booking() {
+    
+    // method booking
+    private void booking() {
 
-    try {
+        try {
 
-        String nama = jTextFieldNama.getText();
+            String nama = jTextFieldNama.getText();
 
-        String lapangan = cbLapangan.getSelectedItem().toString();
+            String lapangan = cbLapangan.getSelectedItem().toString();
 
-        int idLapangan = 1;
+            int idLapangan = 1;
 
-        if (lapangan.equals("Lapangan B")) {
-            idLapangan = 2;
-        } else if (lapangan.equals("Lapangan VIP")) {
-            idLapangan = 3;
-        }
+            if (lapangan.equals("Lapangan B")) {
+                idLapangan = 2;
+            } else if (lapangan.equals("Lapangan VIP")) {
+                idLapangan = 3;
+            }
 
-        String tanggal = jTextFieldTanggal.getText();
+            String tanggal = jTextFieldTanggal.getText();
 
-        String jamMulai = cbJamMulai.getSelectedItem().toString();
-        String jamSelesai = cbJamSelesai.getSelectedItem().toString();
+            String jamMulai = cbJamMulai.getSelectedItem().toString();
+            String jamSelesai = cbJamSelesai.getSelectedItem().toString();
 
-        int mulai = Integer.parseInt(jamMulai.substring(0, 2));
-        int selesai = Integer.parseInt(jamSelesai.substring(0, 2));
+            int mulai = Integer.parseInt(jamMulai.substring(0, 2));
+            int selesai = Integer.parseInt(jamSelesai.substring(0, 2));
 
-        int durasi = selesai - mulai;
+            int durasi = selesai - mulai;
 
-        int hargaPerJam = 50000;
+            int hargaPerJam = 50000;
 
-        if (lapangan.equals("Lapangan VIP")) {
-            hargaPerJam = 100000;
-        }
+            if (lapangan.equals("Lapangan VIP")) {
+                hargaPerJam = 100000;
+            }
 
-        int totalHarga = durasi * hargaPerJam;
+            int totalHarga = durasi * hargaPerJam;
 
-        // ALERT KONFIRMASI
+            // alert konfirmasi
+            String pesan =
+                    "Konfirmasi Booking:\n\n"
+                    + "Lapangan : " + lapangan + "\n"
+                    + "Tanggal  : " + tanggal + "\n"
+                    + "Jam      : " + jamMulai + " - " + jamSelesai + "\n"
+                    + "Durasi   : " + durasi + " jam\n"
+                    + "Total    : Rp " + totalHarga;
 
-        String pesan =
-                "Konfirmasi Booking:\n\n"
-                + "Lapangan : " + lapangan + "\n"
-                + "Tanggal  : " + tanggal + "\n"
-                + "Jam      : " + jamMulai + " - " + jamSelesai + "\n"
-                + "Durasi   : " + durasi + " jam\n"
-                + "Total    : Rp " + totalHarga;
+            int konfirmasi = JOptionPane.showConfirmDialog(
+                    this,
+                    pesan,
+                    "Konfirmasi Booking",
+                    JOptionPane.YES_NO_OPTION
+            );
 
-        int konfirmasi = JOptionPane.showConfirmDialog(
-                this,
-                pesan,
-                "Konfirmasi Booking",
-                JOptionPane.YES_NO_OPTION
-        );
-
-        // =========================
-        // JIKA YES
-        // =========================
-
-        if (konfirmasi == JOptionPane.YES_OPTION) {
-
-            DBBooking.tambahBooking(
-                    nama,
+            // jika Yes
+            if (konfirmasi == JOptionPane.YES_OPTION) {
+                boolean bentrok = DBBooking.cekBentrok(
                     idLapangan,
                     tanggal,
                     jamMulai,
-                    jamSelesai,
-                    durasi,
-                    totalHarga,
-                    "aktif"
-            );
+                    jamSelesai
+                );
 
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Booking berhasil!"
-            );
+                if (bentrok) {
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "Jadwal sudah terisi!",
+                            "Booking Gagal",
+                            JOptionPane.WARNING_MESSAGE
+                    );
+
+                    return;
+                }
+
+                DBBooking.tambahBooking(
+                        nama,
+                        idLapangan,
+                        tanggal,
+                        jamMulai,
+                        jamSelesai,
+                        durasi,
+                        totalHarga,
+                        "aktif"
+                );
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Booking berhasil!"
+                );
+
+                loadJadwal();
+            }
+
+        } catch (Exception e) {
+
+            System.out.println(e);
+
         }
-
-    } catch (Exception e) {
-
-        System.out.println(e);
-
     }
-}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -276,13 +321,17 @@ public class UserBookingView extends javax.swing.JFrame {
         tableJadwal = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         jButtonAdmin = new javax.swing.JButton();
-        TotalHarga = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        lblHargaPerJam = new javax.swing.JLabel();
+        lblDurasi = new javax.swing.JLabel();
+        lblTotalHarga = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTextFieldNama.setText("Masukkan Nama ");
         jTextFieldNama.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldNamaActionPerformed(evt);
@@ -351,11 +400,54 @@ public class UserBookingView extends javax.swing.JFrame {
 
         jLabel8.setText("Form Booking Lap. Badminton");
 
-        jLabel9.setText("Total");
-
         jButtonAdmin.setText("Admin");
 
-        TotalHarga.setText("Rp.0");
+        jLabel5.setText("Harga Per Jam:");
+
+        jLabel9.setText("Durasi:");
+
+        jLabel10.setText("Total:");
+
+        lblHargaPerJam.setText("Rp 0");
+
+        lblDurasi.setText("0 jam");
+
+        lblTotalHarga.setText("Rp 0");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblHargaPerJam, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblDurasi, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
+                    .addComponent(lblTotalHarga, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(11, 11, 11)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(lblHargaPerJam))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(lblDurasi))
+                .addGap(12, 12, 12)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(lblTotalHarga))
+                .addContainerGap(12, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -376,8 +468,7 @@ public class UserBookingView extends javax.swing.JFrame {
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(TotalHarga, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -420,12 +511,10 @@ public class UserBookingView extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cbJamSelesai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel9)
-                        .addGap(18, 18, 18)
-                        .addComponent(TotalHarga, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(46, Short.MAX_VALUE))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(49, Short.MAX_VALUE))
         );
 
         pack();
@@ -443,12 +532,18 @@ public class UserBookingView extends javax.swing.JFrame {
     private void cbJamMulaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbJamMulaiActionPerformed
         // TODO add your handling code here:
         int index = cbJamMulai.getSelectedIndex();
+
+        if (index < 0) {
+            return;
+        }
+
         loadJamSelesai(index);
         hitungTotal();
     }//GEN-LAST:event_cbJamMulaiActionPerformed
 
     private void jTextFieldTanggalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldTanggalActionPerformed
         // TODO add your handling code here:
+        loadJadwal();
     }//GEN-LAST:event_jTextFieldTanggalActionPerformed
 
     private void cbJamSelesaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbJamSelesaiActionPerformed
@@ -497,23 +592,28 @@ public class UserBookingView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel TotalHarga;
     private javax.swing.JComboBox<String> cbJamMulai;
     private javax.swing.JComboBox<String> cbJamSelesai;
     private javax.swing.JComboBox<String> cbLapangan;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonAdmin;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextFieldNama;
     private javax.swing.JTextField jTextFieldTanggal;
+    private javax.swing.JLabel lblDurasi;
+    private javax.swing.JLabel lblHargaPerJam;
+    private javax.swing.JLabel lblTotalHarga;
     private javax.swing.JTable tableJadwal;
     // End of variables declaration//GEN-END:variables
 }
