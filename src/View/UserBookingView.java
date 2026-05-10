@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import Helper.DBBooking;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
+import View.LoginAdminView
 
 /**
  *
@@ -401,6 +402,11 @@ public class UserBookingView extends javax.swing.JFrame {
         jLabel8.setText("Form Booking Lap. Badminton");
 
         jButtonAdmin.setText("Admin");
+        jButtonAdmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAdminActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Harga Per Jam:");
 
@@ -555,6 +561,11 @@ public class UserBookingView extends javax.swing.JFrame {
         // TODO add your handling code here:
         booking();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButtonAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdminActionPerformed
+        // TODO add your handling code here:
+         new LoginAdminView().setVisible(true);
+    }//GEN-LAST:event_jButtonAdminActionPerformed
 
     /**
      * @param args the command line arguments

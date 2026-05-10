@@ -4,6 +4,7 @@
  */
 package Helper;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 
 
@@ -12,21 +13,23 @@ import java.sql.PreparedStatement;
  * @author ASUS
  */
 public class DBBooking {
-     public static void tambahBooking(
-            String nama,
-            int idLapangan,
-            String tanggal,
-            String jamMulai,
-            String jamSelesai,
-            int durasi,
-            int totalHarga,
-            String status
+    
+    // method tambah booking
+    public static void tambahBooking(
+        String nama,
+        int idLapangan,
+        String tanggal,
+        String jamMulai,            
+        String jamSelesai,
+        int durasi,
+        int totalHarga,
+        String status
     ) {
 
         try {
 
             Connection conn = DBHelper.getConnection();
-
+            
             String sql = "INSERT INTO booking "
                     + "(nama_pemesan, id_lapangan, tanggal, jam_mulai, jam_selesai, durasi, total_harga, status) "
                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -35,23 +38,99 @@ public class DBBooking {
 
             pst.setString(1, nama);
             pst.setInt(2, idLapangan);
-            pst.setString(3, tanggal);
+            pst.setString(3, tanggal);            
             pst.setString(4, jamMulai);
             pst.setString(5, jamSelesai);
             pst.setInt(6, durasi);
-            pst.setInt(7, totalHarga);
+            pst.setInt(7, totalHarga);            
             pst.setString(8, status);
 
             pst.executeUpdate();
 
-            System.out.println("Booking berhasil");
+                System.out.println("Booking berhasil");
 
-        } catch (Exception e) {
-
-            System.out.println("Booking gagal");
-            System.out.println(e);
-
-        }
+            } catch (Exception e) {
+                
+                System.out.println("Booking gagal");
+                System.out.println(e);
+            }
     }
     
+    // method cek booking
+    public static boolean cekBooking(
+        int idLapangan,
+        String tanggal,
+        String jamCek
+    ) {
+
+        boolean terisi = false;
+
+        try {
+            Connection conn = DBHelper.getConnection();
+            String sql =
+                    "SELECT * FROM booking "
+                    + "WHERE id_lapangan=? "
+                    + "AND tanggal=? "
+                    + "AND jam_mulai <= ? "
+                    + "AND jam_selesai > ?";
+
+            PreparedStatement pst = conn.prepareStatement(sql);
+
+            pst.setInt(1, idLapangan);
+            pst.setString(2, tanggal);
+            pst.setString(3, jamCek);
+            pst.setString(4, jamCek);
+
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                terisi = true;
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        } 
+        return terisi;
+    }
+    
+    // method cek jam bentrok
+    public static boolean cekBentrok(
+        int idLapangan,
+        String tanggal,
+        String jamMulai,
+        String jamSelesai
+    ) {
+
+    boolean bentrok = false;
+
+    try {
+        Connection conn = DBHelper.getConnection();
+        String sql =
+                "SELECT * FROM booking "
+                + "WHERE id_lapangan=? "
+                + "AND tanggal=? "
+                + "AND ("
+                + "(jam_mulai < ? AND jam_selesai > ?)"
+                + ")";
+
+        PreparedStatement pst = conn.prepareStatement(sql);
+
+        pst.setInt(1, idLapangan);
+        pst.setString(2, tanggal);
+        pst.setString(3, jamSelesai);
+        pst.setString(4, jamMulai);
+
+        ResultSet rs = pst.executeQuery();
+
+        if (rs.next()) {
+            bentrok = true;
+        }
+
+    } catch (Exception e) {
+        System.out.println(e);
+    }
+
+    return bentrok;
+    
+    }
 }
