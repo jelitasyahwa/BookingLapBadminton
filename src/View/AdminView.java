@@ -3,20 +3,137 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package View;
+import Helper.DBBooking;
+import Helper.DBLapangan;
+import java.sql.ResultSet;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author ASUS
  */
 public class AdminView extends javax.swing.JFrame {
-
+    int idLapangan = 0;
     /**
      * Creates new form AdminView
      */
     public AdminView() {
         initComponents();
+        panelContent.add(panelLapangan, "lapangan");
+        panelContent.add(panelBooking, "booking");
+
+        loadTableLapangan();
+        
+        loadTableBooking();
+
+    }
+    
+    private void loadTableLapangan() {
+
+        DefaultTableModel model =
+                new DefaultTableModel();
+
+        model.setRowCount(0);
+
+        model.addColumn("ID");
+        model.addColumn("Nama Lapangan");
+        model.addColumn("Harga per Jam");
+        model.addColumn("Status");
+
+        try {
+
+            ResultSet rs =
+                    DBLapangan.getLapangan();
+
+            while (rs.next()) {
+
+                model.addRow(new Object[]{
+                    rs.getInt("id_lapangan"),
+                    rs.getString("nama_lapangan"),
+                    rs.getInt("harga_per_jam"),
+                    rs.getString("status")
+                });
+
+            }
+
+            tableLapangan.setModel(model);
+            
+            // hide ID 
+            tableLapangan.getColumnModel()
+                    .getColumn(0)
+                    .setMinWidth(0);
+
+            tableLapangan.getColumnModel()
+                    .getColumn(0)
+                    .setMaxWidth(0);
+
+            tableLapangan.getColumnModel()
+                    .getColumn(0)
+                    .setWidth(0);
+
+        } catch (Exception e) {
+
+            System.out.println(e);
+
+        }
+
+    }
+    
+    private void loadTableBooking() {
+
+    DefaultTableModel model =
+            new DefaultTableModel();
+
+    model.addColumn("Nama Pemesan");
+    model.addColumn("Lapangan");
+    model.addColumn("Tanggal");
+    model.addColumn("Jam");
+    model.addColumn("Durasi");
+    model.addColumn("Total");
+    model.addColumn("Status");
+
+    try {
+
+        ResultSet rs =
+                DBBooking.getBooking();
+
+        while (rs.next()) {
+
+            String jam =
+                    rs.getString("jam_mulai")
+                    + " - " +
+                    rs.getString("jam_selesai");
+
+            model.addRow(new Object[]{
+
+                rs.getString("nama_pemesan"),
+
+                rs.getString("nama_lapangan"),
+
+                rs.getString("tanggal"),
+
+                jam,
+
+                rs.getInt("durasi") + " jam",
+
+                "Rp " + rs.getInt("total_harga"),
+
+                rs.getString("status")
+
+            });
+
+        }
+
+        jTable2.setModel(model);
+
+    } catch (Exception e) {
+
+        System.out.println(e);
+
     }
 
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -41,6 +158,8 @@ public class AdminView extends javax.swing.JFrame {
         panelBooking = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
         panelLapangan = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -54,7 +173,7 @@ public class AdminView extends javax.swing.JFrame {
         btnHapus = new javax.swing.JButton();
         btnClear = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableLapangan = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -153,63 +272,72 @@ public class AdminView extends javax.swing.JFrame {
         panelSidebarLayout.setHorizontalGroup(
             panelSidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelSidebarLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(panelSidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnLogout, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(panelSidebarLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(panelSidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnMenuBooking, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnMenuLapangan, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE))))
+                    .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnMenuBooking, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnMenuLapangan, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE))
                 .addContainerGap())
         );
         panelSidebarLayout.setVerticalGroup(
             panelSidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelSidebarLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24)
+                .addComponent(lblTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnMenuLapangan)
                 .addGap(18, 18, 18)
                 .addComponent(btnMenuBooking)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnLogout)
-                .addGap(26, 26, 26))
+                .addGap(34, 34, 34))
         );
 
         panelContent.setLayout(new java.awt.CardLayout());
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Nama User", "Lapangan", "Tanggal", "Jam", "Total (Rp)", "Status"
             }
         ));
         jScrollPane2.setViewportView(jTable2);
+
+        jLabel6.setText("Data Booking");
+
+        jLabel7.setText("Daftar Data Booking Lapangan");
 
         javax.swing.GroupLayout panelBookingLayout = new javax.swing.GroupLayout(panelBooking);
         panelBooking.setLayout(panelBookingLayout);
         panelBookingLayout.setHorizontalGroup(
             panelBookingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBookingLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23)
+                .addGroup(panelBookingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 703, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelBookingLayout.setVerticalGroup(
             panelBookingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBookingLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(22, Short.MAX_VALUE)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel7)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(52, 52, 52))
         );
 
-        panelContent.add(panelBooking, "card2");
+        panelContent.add(panelBooking, "booking");
 
         jLabel1.setText("Kelola Lapangan");
 
@@ -223,7 +351,12 @@ public class AdminView extends javax.swing.JFrame {
 
         jLabel3.setText("Harga");
 
-        cbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tersedia", "Maintenance" }));
+        cbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "tersedia", "maintenance" }));
+        cbStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbStatusActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Status");
 
@@ -234,7 +367,7 @@ public class AdminView extends javax.swing.JFrame {
             }
         });
 
-        btnEdit.setText("EDIT");
+        btnEdit.setText("UPDATE");
         btnEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditActionPerformed(evt);
@@ -255,7 +388,7 @@ public class AdminView extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableLapangan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -266,7 +399,12 @@ public class AdminView extends javax.swing.JFrame {
                 "ID", "Nama Lapangan", "Harga per Jam", "Status"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tableLapangan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableLapanganMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tableLapangan);
 
         jLabel5.setText("Data Lapangan");
 
@@ -294,10 +432,13 @@ public class AdminView extends javax.swing.JFrame {
                         .addComponent(Harga)
                         .addComponent(cbStatus, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(panelLapanganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 509, Short.MAX_VALUE)
+                    .addGroup(panelLapanganLayout.createSequentialGroup()
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         panelLapanganLayout.setVerticalGroup(
             panelLapanganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -329,10 +470,10 @@ public class AdminView extends javax.swing.JFrame {
                             .addComponent(btnHapus)
                             .addComponent(btnClear)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(131, Short.MAX_VALUE))
+                .addContainerGap(108, Short.MAX_VALUE))
         );
 
-        panelContent.add(panelLapangan, "card3");
+        panelContent.add(panelLapangan, "lapangan");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -341,7 +482,7 @@ public class AdminView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panelSidebar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 630, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(panelContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(33, 33, 33))
         );
@@ -353,7 +494,7 @@ public class AdminView extends javax.swing.JFrame {
                     .addComponent(panelSidebar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(panelContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 249, Short.MAX_VALUE)))
+                        .addGap(0, 28, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -362,35 +503,182 @@ public class AdminView extends javax.swing.JFrame {
 
     private void btnMenuLapanganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuLapanganActionPerformed
         // TODO add your handling code here:
+        java.awt.CardLayout cl =
+            (java.awt.CardLayout)
+                    panelContent.getLayout();
+
+        cl.show(panelContent, "lapangan");
     }//GEN-LAST:event_btnMenuLapanganActionPerformed
 
     private void btnMenuBookingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuBookingActionPerformed
         // TODO add your handling code here:
+        java.awt.CardLayout cl =
+            (java.awt.CardLayout)
+                    panelContent.getLayout();
+
+        cl.show(panelContent, "booking");
     }//GEN-LAST:event_btnMenuBookingActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
         // TODO add your handling code here:
+        int pilih =
+        JOptionPane.showConfirmDialog(
+                this,
+                "Yakin ingin logout?",
+                "Logout",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (pilih == JOptionPane.YES_OPTION) {
+
+         new LoginAdminView().setVisible(true);
+
+        this.dispose();
+        }
     }//GEN-LAST:event_btnLogoutActionPerformed
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         // TODO add your handling code here:
+        clearForm();
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnHapusActionPerformed
+        int konfirmasi =
+        JOptionPane.showConfirmDialog(
+                this,
+                "Yakin ingin menghapus data ini?",
+                "Konfirmasi Hapus",
+                JOptionPane.YES_NO_OPTION
+        );
 
+if (konfirmasi == JOptionPane.YES_OPTION) {
+
+    DBLapangan.hapusLapangan(
+            idLapangan
+    );
+
+    JOptionPane.showMessageDialog(
+            this,
+            "Data berhasil dihapus"
+    );
+
+    loadTableLapangan();
+    
+
+}
+
+    }//GEN-LAST:event_btnHapusActionPerformed
+    
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         // TODO add your handling code here:
+            String nama =
+            NamaLapangan.getText();
+
+    int harga =
+            Integer.parseInt(
+                    Harga.getText()
+            );
+
+    String status =
+            cbStatus.getSelectedItem()
+                    .toString();
+
+    DBLapangan.editLapangan(
+            idLapangan,
+            nama,
+            harga,
+            status
+    );
+
+    JOptionPane.showMessageDialog(
+            this,
+            "Data berhasil diupdate"
+    );
+
+loadTableLapangan();
+        
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
         // TODO add your handling code here:
+        System.out.println("BUTTON KLIK");
+        String nama =
+        NamaLapangan.getText();
+
+        int harga =
+            Integer.parseInt(
+                    Harga.getText()
+            );
+
+        String status =
+            cbStatus.getSelectedItem()
+                    .toString();
+
+        DBLapangan.tambahLapangan(
+            nama,
+            harga,
+            status
+        );
+
+        JOptionPane.showMessageDialog(
+                this,
+                "Data berhasil ditambah"
+        );
+
+        loadTableLapangan();
     }//GEN-LAST:event_btnTambahActionPerformed
 
     private void NamaLapanganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NamaLapanganActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_NamaLapanganActionPerformed
+
+    private void cbStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbStatusActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbStatusActionPerformed
+
+    private void tableLapanganMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableLapanganMouseClicked
+        // TODO add your handling code here:
+            int baris =
+            tableLapangan.getSelectedRow();
+
+    idLapangan =
+            Integer.parseInt(
+                    tableLapangan
+                            .getValueAt(baris, 0)
+                            .toString()
+            );
+
+    NamaLapangan.setText(
+            tableLapangan
+                    .getValueAt(baris, 1)
+                    .toString()
+    );
+
+    Harga.setText(
+            tableLapangan
+                    .getValueAt(baris, 2)
+                    .toString()
+    );
+
+    cbStatus.setSelectedItem(
+            tableLapangan
+                    .getValueAt(baris, 3)
+                    .toString()
+    );
+    }//GEN-LAST:event_tableLapanganMouseClicked
+    
+    private void clearForm() {
+
+        NamaLapangan.setText("");
+
+        Harga.setText("");
+
+        cbStatus.setSelectedIndex(0);
+
+        idLapangan = 0;
+
+    }
 
     /**
      * @param args the command line arguments
@@ -443,6 +731,8 @@ public class AdminView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -451,12 +741,12 @@ public class AdminView extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JPanel panelBooking;
     private javax.swing.JPanel panelContent;
     private javax.swing.JPanel panelLapangan;
     private javax.swing.JPanel panelSidebar;
+    private javax.swing.JTable tableLapangan;
     // End of variables declaration//GEN-END:variables
 }

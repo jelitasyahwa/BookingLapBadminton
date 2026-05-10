@@ -133,4 +133,34 @@ public class DBBooking {
     return bentrok;
     
     }
+    
+    public static ResultSet getBooking() {
+
+    ResultSet rs = null;
+
+    try {
+
+        Connection conn =
+                DBHelper.getConnection();
+
+        String sql =
+                "SELECT booking.*, lapangan.nama_lapangan "
+                + "FROM booking "
+                + "JOIN lapangan "
+                + "ON booking.id_lapangan = lapangan.id_lapangan";
+
+        PreparedStatement pst =
+                conn.prepareStatement(sql);
+
+        rs = pst.executeQuery();
+
+    } catch (Exception e) {
+
+        System.out.println(e);
+
+    }
+
+    return rs;
+
+}
 }
