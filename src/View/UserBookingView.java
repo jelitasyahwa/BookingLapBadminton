@@ -332,6 +332,7 @@ public class UserBookingView extends javax.swing.JFrame {
         lblTotalHarga = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(javax.swing.UIManager.getDefaults().getColor("Actions.Blue"));
 
         jTextFieldNama.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -346,14 +347,19 @@ public class UserBookingView extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel1.setText("Lapangan");
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setText("Tanggal Booking");
 
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel3.setText("Jam Mulai");
 
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel4.setText("Jam Selesai ");
 
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton1.setText("Booking");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -382,6 +388,7 @@ public class UserBookingView extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel6.setText("Nama");
 
         tableJadwal.setModel(new javax.swing.table.DefaultTableModel(
@@ -397,8 +404,10 @@ public class UserBookingView extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tableJadwal);
 
+        jLabel7.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
         jLabel7.setText("Jadwal Ketersediaan Lapangan");
 
+        jLabel8.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
         jLabel8.setText("Form Booking Lap. Badminton");
 
         jButtonAdmin.setText("Admin");
@@ -408,16 +417,25 @@ public class UserBookingView extends javax.swing.JFrame {
             }
         });
 
+        jPanel1.setBackground(new java.awt.Color(245, 245, 245));
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel5.setText("Harga Per Jam:");
 
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel9.setText("Durasi:");
 
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel10.setText("Total:");
 
+        lblHargaPerJam.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblHargaPerJam.setText("Rp 0");
 
+        lblDurasi.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblDurasi.setText("0 jam");
 
+        lblTotalHarga.setBackground(new java.awt.Color(245, 245, 245));
+        lblTotalHarga.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblTotalHarga.setText("Rp 0");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
