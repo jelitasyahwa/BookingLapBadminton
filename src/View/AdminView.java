@@ -153,7 +153,7 @@ public class AdminView extends javax.swing.JFrame {
         lblTitle = new javax.swing.JLabel();
         btnMenuLapangan = new javax.swing.JButton();
         btnMenuBooking = new javax.swing.JButton();
-        btnLogout = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
         panelContent = new javax.swing.JPanel();
         panelBooking = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -162,19 +162,21 @@ public class AdminView extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         panelLapangan = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        NamaLapangan = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        Harga = new javax.swing.JTextField();
-        cbStatus = new javax.swing.JComboBox<>();
-        jLabel4 = new javax.swing.JLabel();
-        btnTambah = new javax.swing.JButton();
-        btnEdit = new javax.swing.JButton();
-        btnHapus = new javax.swing.JButton();
-        btnClear = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableLapangan = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
+        btnLogout = new javax.swing.JButton();
+        jPanel7 = new javax.swing.JPanel();
+        btnHapus = new javax.swing.JButton();
+        btnClear = new javax.swing.JButton();
+        btnTambah = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
+        cbStatus = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        Harga = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        NamaLapangan = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -243,56 +245,45 @@ public class AdminView extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(900, 500));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        panelSidebar.setBackground(new java.awt.Color(255, 255, 255));
+        panelSidebar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblTitle.setBackground(new java.awt.Color(255, 255, 255));
+        lblTitle.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
+        lblTitle.setForeground(new java.awt.Color(255, 255, 255));
         lblTitle.setText("ADMIN");
+        panelSidebar.add(lblTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 100, 32));
 
+        btnMenuLapangan.setFont(new java.awt.Font("Segoe UI Black", 1, 12)); // NOI18N
         btnMenuLapangan.setText("Kelola Lapangan");
         btnMenuLapangan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnMenuLapanganActionPerformed(evt);
             }
         });
+        panelSidebar.add(btnMenuLapangan, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 132, -1));
 
+        btnMenuBooking.setFont(new java.awt.Font("Segoe UI Black", 1, 12)); // NOI18N
         btnMenuBooking.setText("Data Booking");
         btnMenuBooking.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnMenuBookingActionPerformed(evt);
             }
         });
+        panelSidebar.add(btnMenuBooking, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, 132, -1));
 
-        btnLogout.setText("Logout");
-        btnLogout.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLogoutActionPerformed(evt);
-            }
-        });
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/bg_login.png.png"))); // NOI18N
+        jLabel8.setText("jLabel8");
+        jLabel8.setMaximumSize(new java.awt.Dimension(900, 500));
+        jLabel8.setMinimumSize(new java.awt.Dimension(900, 500));
+        jLabel8.setName(""); // NOI18N
+        jLabel8.setPreferredSize(new java.awt.Dimension(900, 500));
+        panelSidebar.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 160, 490));
 
-        javax.swing.GroupLayout panelSidebarLayout = new javax.swing.GroupLayout(panelSidebar);
-        panelSidebar.setLayout(panelSidebarLayout);
-        panelSidebarLayout.setHorizontalGroup(
-            panelSidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelSidebarLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelSidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnMenuBooking, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnMenuLapangan, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        panelSidebarLayout.setVerticalGroup(
-            panelSidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelSidebarLayout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(lblTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnMenuLapangan)
-                .addGap(18, 18, 18)
-                .addComponent(btnMenuBooking)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnLogout)
-                .addGap(34, 34, 34))
-        );
+        getContentPane().add(panelSidebar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 160, 500));
 
         panelContent.setLayout(new java.awt.CardLayout());
 
@@ -313,81 +304,15 @@ public class AdminView extends javax.swing.JFrame {
 
         jLabel7.setText("Daftar Data Booking Lapangan");
 
-        javax.swing.GroupLayout panelBookingLayout = new javax.swing.GroupLayout(panelBooking);
-        panelBooking.setLayout(panelBookingLayout);
-        panelBookingLayout.setHorizontalGroup(
-            panelBookingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelBookingLayout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addGroup(panelBookingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 703, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        panelBookingLayout.setVerticalGroup(
-            panelBookingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBookingLayout.createSequentialGroup()
-                .addContainerGap(22, Short.MAX_VALUE)
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(52, 52, 52))
-        );
+        panelLapangan.setBackground(new java.awt.Color(255, 255, 255));
+        panelLapangan.setMaximumSize(new java.awt.Dimension(900, 500));
+        panelLapangan.setMinimumSize(new java.awt.Dimension(900, 500));
+        panelLapangan.setPreferredSize(new java.awt.Dimension(900, 500));
 
-        panelContent.add(panelBooking, "booking");
-
+        jLabel1.setFont(new java.awt.Font("Segoe UI Black", 1, 12)); // NOI18N
         jLabel1.setText("Kelola Lapangan");
 
-        jLabel2.setText("Nama Lapangan");
-
-        NamaLapangan.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NamaLapanganActionPerformed(evt);
-            }
-        });
-
-        jLabel3.setText("Harga");
-
-        cbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "tersedia", "maintenance" }));
-        cbStatus.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbStatusActionPerformed(evt);
-            }
-        });
-
-        jLabel4.setText("Status");
-
-        btnTambah.setText("TAMBAH");
-        btnTambah.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTambahActionPerformed(evt);
-            }
-        });
-
-        btnEdit.setText("UPDATE");
-        btnEdit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditActionPerformed(evt);
-            }
-        });
-
-        btnHapus.setText("HAPUS");
-        btnHapus.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHapusActionPerformed(evt);
-            }
-        });
-
-        btnClear.setText("CLEAR");
-        btnClear.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnClearActionPerformed(evt);
-            }
-        });
-
+        tableLapangan.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         tableLapangan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -406,97 +331,162 @@ public class AdminView extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tableLapangan);
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI Black", 1, 12)); // NOI18N
         jLabel5.setText("Data Lapangan");
+
+        btnLogout.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnLogout.setText("Logout");
+        btnLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogoutActionPerformed(evt);
+            }
+        });
+
+        jPanel7.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btnHapus.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnHapus.setText("HAPUS");
+        btnHapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHapusActionPerformed(evt);
+            }
+        });
+        jPanel7.add(btnHapus, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 300, 79, -1));
+
+        btnClear.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnClear.setText("CLEAR");
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearActionPerformed(evt);
+            }
+        });
+        jPanel7.add(btnClear, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 300, 78, -1));
+
+        btnTambah.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnTambah.setText("TAMBAH");
+        btnTambah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTambahActionPerformed(evt);
+            }
+        });
+        jPanel7.add(btnTambah, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, -1, -1));
+
+        btnEdit.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnEdit.setText("UPDATE");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
+        jPanel7.add(btnEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 250, 78, -1));
+
+        cbStatus.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        cbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "tersedia", "maintenance" }));
+        cbStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbStatusActionPerformed(evt);
+            }
+        });
+        jPanel7.add(cbStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 186, -1));
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel4.setText("Status");
+        jPanel7.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, 70, 20));
+
+        Harga.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                HargaActionPerformed(evt);
+            }
+        });
+        jPanel7.add(Harga, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 186, -1));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel3.setText("Harga");
+        jPanel7.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 70, 40));
+
+        NamaLapangan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NamaLapanganActionPerformed(evt);
+            }
+        });
+        jPanel7.add(NamaLapangan, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 186, -1));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel2.setText("Nama Lapangan");
+        jPanel7.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, 30));
 
         javax.swing.GroupLayout panelLapanganLayout = new javax.swing.GroupLayout(panelLapangan);
         panelLapangan.setLayout(panelLapanganLayout);
         panelLapanganLayout.setHorizontalGroup(
             panelLapanganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelLapanganLayout.createSequentialGroup()
-                .addGap(14, 14, 14)
+                .addGap(20, 20, 20)
                 .addGroup(panelLapanganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelLapanganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel2)
-                        .addComponent(NamaLapangan)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel4)
-                        .addGroup(panelLapanganLayout.createSequentialGroup()
-                            .addGap(6, 6, 6)
-                            .addGroup(panelLapanganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(btnHapus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnTambah, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
-                            .addGroup(panelLapanganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(btnEdit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnClear, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addComponent(Harga)
-                        .addComponent(cbStatus, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(panelLapanganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 509, Short.MAX_VALUE)
                     .addGroup(panelLapanganLayout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(108, 108, 108)
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addGap(174, 174, 174)
+                        .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelLapanganLayout.createSequentialGroup()
+                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelLapanganLayout.setVerticalGroup(
             panelLapanganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLapanganLayout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addGroup(panelLapanganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addGroup(panelLapanganLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
                 .addGroup(panelLapanganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(panelLapanganLayout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(NamaLapangan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Harga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(59, 59, 59)
-                        .addGroup(panelLapanganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnTambah)
-                            .addComponent(btnEdit))
+                        .addGap(10, 10, 10)
+                        .addGroup(panelLapanganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel5))))
+                .addGap(20, 20, 20)
+                .addGroup(panelLapanganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(30, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout panelBookingLayout = new javax.swing.GroupLayout(panelBooking);
+        panelBooking.setLayout(panelBookingLayout);
+        panelBookingLayout.setHorizontalGroup(
+            panelBookingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelBookingLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelLapangan, javax.swing.GroupLayout.PREFERRED_SIZE, 760, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(698, 698, 698)
+                .addGroup(panelBookingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 703, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        panelBookingLayout.setVerticalGroup(
+            panelBookingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelBookingLayout.createSequentialGroup()
+                .addGroup(panelBookingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelBookingLayout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addGroup(panelLapanganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnHapus)
-                            .addComponent(btnClear)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(108, Short.MAX_VALUE))
+                        .addComponent(jLabel7)
+                        .addGap(31, 31, 31)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelBookingLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(panelLapangan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(438, Short.MAX_VALUE))
         );
 
-        panelContent.add(panelLapangan, "lapangan");
+        panelContent.add(panelBooking, "booking");
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(panelSidebar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(panelContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelSidebar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(panelContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 28, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
+        getContentPane().add(panelContent, new org.netbeans.lib.awtextra.AbsoluteConstraints(156, 6, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -667,6 +657,10 @@ loadTableLapangan();
                     .toString()
     );
     }//GEN-LAST:event_tableLapanganMouseClicked
+
+    private void HargaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HargaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_HargaActionPerformed
     
     private void clearForm() {
 
@@ -733,12 +727,14 @@ loadTableLapangan();
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable2;
