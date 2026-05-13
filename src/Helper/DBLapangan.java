@@ -24,7 +24,7 @@ public class DBLapangan {
             Statement st = conn.createStatement();
 
             String sql =
-    "SELECT * FROM lapangan";
+                    "SELECT * FROM lapangan";
 
             rs = st.executeQuery(sql);
 
@@ -38,7 +38,34 @@ public class DBLapangan {
         return rs;
     }
      
-     public static void tambahLapangan(
+    public static int getHargaLapangan(String namaLapangan) {
+
+        int harga = 0;
+
+        try {
+
+            String sql =
+                "SELECT harga_per_jam FROM lapangan WHERE nama_lapangan=?";
+
+            PreparedStatement ps =
+                DBHelper.getConnection().prepareStatement(sql);
+
+            ps.setString(1, namaLapangan);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                harga = rs.getInt("harga_per_jam");
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return harga;
+    }
+     
+    public static void tambahLapangan(
         String nama,
         int harga,
         String status
@@ -111,9 +138,9 @@ public class DBLapangan {
     }
 
 }
-     public static void hapusLapangan(
+    public static void hapusLapangan(
         int id
-) {
+    ) {
 
     try {
 
@@ -137,6 +164,59 @@ public class DBLapangan {
 
     }
 
+}
+    public static String getStatusLapangan(String namaLapangan) {
+
+    String status = "";
+
+    try {
+
+        String sql =
+            "SELECT status FROM lapangan WHERE nama_lapangan=?";
+
+        PreparedStatement ps =
+            DBHelper.getConnection().prepareStatement(sql);
+
+        ps.setString(1, namaLapangan);
+
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            status = rs.getString("status");
+        }
+
+    } catch (Exception e) {
+        System.out.println(e);
+    }
+
+    return status;
+}
+    // status lapangan di user
+    public static ResultSet getLapanganTersedia() {
+
+    ResultSet rs = null;
+
+    try {
+
+        Connection conn =
+                DBHelper.getConnection();
+
+        Statement st =
+                conn.createStatement();
+
+        String sql =
+                "SELECT * FROM lapangan "
+                + "WHERE status='tersedia'";
+
+        rs = st.executeQuery(sql);
+
+    } catch (Exception e) {
+
+        System.out.println(e);
+
+    }
+
+    return rs;
 }
     
 }

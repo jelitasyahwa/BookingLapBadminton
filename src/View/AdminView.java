@@ -245,7 +245,6 @@ public class AdminView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(900, 500));
-        setPreferredSize(new java.awt.Dimension(1120, 100));
 
         panelSidebar.setBackground(new java.awt.Color(255, 255, 255));
         panelSidebar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -258,6 +257,7 @@ public class AdminView extends javax.swing.JFrame {
 
         btnMenuLapangan.setFont(new java.awt.Font("Segoe UI Black", 1, 12)); // NOI18N
         btnMenuLapangan.setText("Kelola Lapangan");
+        btnMenuLapangan.setPreferredSize(new java.awt.Dimension(115, 23));
         btnMenuLapangan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnMenuLapanganActionPerformed(evt);
@@ -348,6 +348,7 @@ public class AdminView extends javax.swing.JFrame {
         btnTambah.setBackground(javax.swing.UIManager.getDefaults().getColor("Actions.Blue"));
         btnTambah.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnTambah.setText("TAMBAH");
+        btnTambah.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnTambah.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTambahActionPerformed(evt);
@@ -432,7 +433,7 @@ public class AdminView extends javax.swing.JFrame {
                 .addGroup(panelLapanganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(61, 61, 61))
+                .addContainerGap())
         );
 
         panelContent.add(panelLapangan, "card3");
