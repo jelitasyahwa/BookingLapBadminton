@@ -68,11 +68,12 @@ public class DBBooking {
         try {
             Connection conn = DBHelper.getConnection();
             String sql =
-                    "SELECT * FROM booking "
-                    + "WHERE id_lapangan=? "
-                    + "AND tanggal=? "
-                    + "AND jam_mulai <= ? "
-                    + "AND jam_selesai > ?";
+        "SELECT * FROM booking "
+        + "WHERE id_lapangan=? "
+        + "AND tanggal=? "
+        + "AND status='aktif' "
+        + "AND jam_mulai <= ? "
+        + "AND jam_selesai > ?";
 
             PreparedStatement pst = conn.prepareStatement(sql);
 
@@ -133,6 +134,33 @@ public class DBBooking {
     return bentrok;
     
     }
+    
+    public static void updateStatusSelesai() {
+
+        try {
+
+            Connection conn =
+                    DBHelper.getConnection();
+
+            String sql =
+                    "UPDATE booking "
+                    + "SET status='selesai' "
+                    + "WHERE status='aktif' "
+                    + "AND CONCAT(tanggal, ' ', jam_selesai) < NOW()";
+
+            PreparedStatement pst =
+                    conn.prepareStatement(sql);
+
+            pst.executeUpdate();
+
+        } catch (Exception e) {
+
+            System.out.println(e);
+
+        }
+    }
+
+
     
     public static ResultSet getBooking() {
 

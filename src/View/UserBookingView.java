@@ -12,12 +12,13 @@ import java.util.Date;
 import java.util.Calendar;
 import javax.swing.JOptionPane;
 import java.util.ArrayList;
+import Interface.BookingInterface;
 
 /**
  *
  * @author ASUS
  */
-public class UserBookingView extends javax.swing.JFrame {
+public class UserBookingView extends javax.swing.JFrame  implements BookingInterface {
     
     private ArrayList<Integer> listIdLapangan = new ArrayList<>();
 
@@ -26,6 +27,8 @@ public class UserBookingView extends javax.swing.JFrame {
      */
     public UserBookingView() {
         initComponents();
+        
+        DBBooking.updateStatusSelesai();
         
         loadJamMulai();
         loadJamSelesai(0);
@@ -262,7 +265,8 @@ public class UserBookingView extends javax.swing.JFrame {
     }
     
     // method booking
-    private void booking() {
+    @Override
+    public void booking() {
 
         try {
 

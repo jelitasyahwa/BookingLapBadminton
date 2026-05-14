@@ -49,6 +49,37 @@ public class DBAdmin {
     }
     
 
+public static void registerAdmin(
+        String username,
+        String password
+) {
 
-    
+    try {
+
+        Connection conn =
+                DBHelper.getConnection();
+
+        String sql =
+                "INSERT INTO admin "
+                + "(username, password) "
+                + "VALUES (?, ?)";
+
+        PreparedStatement ps =
+                conn.prepareStatement(sql);
+
+        ps.setString(1, username);
+        ps.setString(2, password);
+
+        ps.executeUpdate();
+
+        System.out.println(
+                "Register berhasil"
+        );
+
+    } catch (Exception e) {
+
+        System.out.println(e);
+
+    }
+}
 }

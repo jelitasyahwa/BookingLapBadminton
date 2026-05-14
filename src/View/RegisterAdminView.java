@@ -3,53 +3,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package View;
-import Helper.DBAdmin;
 import javax.swing.JOptionPane;
-
+import Helper.DBAdmin;
 /**
  *
  * @author ASUS
  */
-public class LoginAdminView extends javax.swing.JFrame {
+public class RegisterAdminView extends javax.swing.JFrame {
 
     /**
-     * Creates new form LoginAdminView
+     * Creates new form RegisterAdminView
      */
-   public LoginAdminView() {
-    initComponents();
-
-    setLocationRelativeTo(null);
-    
-}
-   
-    private void loginAdmin() {
-
-        String username = Username.getText();
-
-        String password =
-                String.valueOf(Password.getPassword());
-
-        boolean login =
-                DBAdmin.login(username, password);
-
-        if (login) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Login berhasil"
-            );
-
-            new LoginAdminView().setVisible(true);
-
-            this.dispose();
-
-        } else {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Username atau password salah"
-            );
-        }
+    public RegisterAdminView() {
+        initComponents();
     }
 
     /**
@@ -61,33 +27,20 @@ public class LoginAdminView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField1 = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         Username = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         Password = new javax.swing.JPasswordField();
-        Login = new javax.swing.JButton();
-        Kembali = new javax.swing.JButton();
         Register = new javax.swing.JButton();
+        Kembali = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
+        ConfirmPassword = new javax.swing.JPasswordField();
+        jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
 
-        jTextField1.setText("jTextField1");
-
-        jButton2.setText("jButton2");
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(900, 500));
-        setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel3.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("ADMIN LOGIN");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 50, 130, 30));
 
         jPanel1.setBackground(new java.awt.Color(248, 249, 250));
 
@@ -109,13 +62,13 @@ public class LoginAdminView extends javax.swing.JFrame {
             }
         });
 
-        Login.setBackground(new java.awt.Color(21, 101, 192));
-        Login.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        Login.setForeground(new java.awt.Color(255, 255, 255));
-        Login.setText("Login");
-        Login.addActionListener(new java.awt.event.ActionListener() {
+        Register.setBackground(new java.awt.Color(21, 101, 192));
+        Register.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        Register.setForeground(new java.awt.Color(255, 255, 255));
+        Register.setText("Register");
+        Register.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                LoginActionPerformed(evt);
+                RegisterActionPerformed(evt);
             }
         });
 
@@ -127,18 +80,14 @@ public class LoginAdminView extends javax.swing.JFrame {
             }
         });
 
-        Register.setBackground(new java.awt.Color(21, 101, 192));
-        Register.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        Register.setForeground(new java.awt.Color(255, 255, 255));
-        Register.setText("Register");
-        Register.addActionListener(new java.awt.event.ActionListener() {
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel5.setText("Confirm Password");
+
+        ConfirmPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RegisterActionPerformed(evt);
+                ConfirmPasswordActionPerformed(evt);
             }
         });
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel5.setText("Belum Punya Akun?");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -147,16 +96,16 @@ public class LoginAdminView extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(71, 71, 71)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(Username, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
-                        .addComponent(Password, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
+                        .addComponent(Username)
+                        .addComponent(Password)
                         .addComponent(Kembali, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
-                        .addComponent(Login, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
+                        .addComponent(Register, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(Register, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)))
-                .addContainerGap(85, Short.MAX_VALUE))
+                        .addComponent(ConfirmPassword)))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -167,88 +116,101 @@ public class LoginAdminView extends javax.swing.JFrame {
                 .addComponent(Username, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Password, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
-                .addComponent(Login, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Password, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(ConfirmPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
                 .addComponent(Register, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(Kembali, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 90, 310, 370));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 90, 300, 380));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("ADMIN REGISTER");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 50, 180, 30));
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/bg_login.png.png"))); // NOI18N
         jLabel4.setText("jLabel4");
-        jLabel4.setMinimumSize(new java.awt.Dimension(900, 500));
-        jLabel4.setPreferredSize(new java.awt.Dimension(900, 500));
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 920, 490));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void PasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasswordActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_PasswordActionPerformed
-
     private void UsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UsernameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_UsernameActionPerformed
 
-    private void LoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginActionPerformed
+    private void PasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasswordActionPerformed
         // TODO add your handling code here:
-        String username =
-                Username.getText();
-
-        String password =
-                String.valueOf(
-                        Password.getPassword()
-                );
-
-        boolean login =
-                DBAdmin.login(
-                        username,
-                        password
-                );
-
-        if (login) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Login berhasil"
-            );
-
-            new AdminView(username)
-        .setVisible(true);
-
-            this.dispose();
-
-        } else {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Username atau password salah"
-            );
-
-        }
-    }//GEN-LAST:event_LoginActionPerformed
-
-    private void KembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KembaliActionPerformed
-        // TODO add your handling code here:
-           new UserBookingView().setVisible(true);
-
-    this.dispose();
-    }//GEN-LAST:event_KembaliActionPerformed
+    }//GEN-LAST:event_PasswordActionPerformed
 
     private void RegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegisterActionPerformed
         // TODO add your handling code here:
-        new RegisterAdminView().setVisible(true);
+        String username =
+         Username.getText();
 
-dispose();
+ String password =
+         Password.getText();
+
+ String confirm =
+         ConfirmPassword.getText();
+
+ if (
+     username.isEmpty()
+     || password.isEmpty()
+     || confirm.isEmpty()
+ ) {
+
+     JOptionPane.showMessageDialog(
+             this,
+             "Data tidak boleh kosong!"
+     );
+
+     return;
+ }
+
+ if (!password.equals(confirm)) {
+
+     JOptionPane.showMessageDialog(
+             this,
+             "Password tidak sama!"
+     );
+
+     return;
+ }
+
+ DBAdmin.registerAdmin(
+         username,
+         password
+ );
+
+ JOptionPane.showMessageDialog(
+         this,
+         "Register berhasil!"
+ );
+
+ new LoginAdminView().setVisible(true);
+
+ dispose();
     }//GEN-LAST:event_RegisterActionPerformed
+
+    private void KembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KembaliActionPerformed
+        // TODO add your handling code here:
+            new LoginAdminView().setVisible(true);
+
+    dispose();
+    }//GEN-LAST:event_KembaliActionPerformed
+
+    private void ConfirmPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmPasswordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ConfirmPasswordActionPerformed
 
     /**
      * @param args the command line arguments
@@ -267,37 +229,35 @@ dispose();
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LoginAdminView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegisterAdminView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LoginAdminView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegisterAdminView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LoginAdminView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegisterAdminView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LoginAdminView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegisterAdminView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LoginAdminView().setVisible(true);
+                new RegisterAdminView().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPasswordField ConfirmPassword;
     private javax.swing.JButton Kembali;
-    private javax.swing.JButton Login;
     private javax.swing.JPasswordField Password;
     private javax.swing.JButton Register;
     private javax.swing.JTextField Username;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
