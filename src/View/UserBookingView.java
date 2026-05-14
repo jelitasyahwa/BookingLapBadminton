@@ -13,14 +13,17 @@ import java.util.Calendar;
 import javax.swing.JOptionPane;
 import java.util.ArrayList;
 import Interface.BookingInterface;
+import Controller.BookingController;
 
 /**
  *
  * @author ASUS
  */
-public class UserBookingView extends javax.swing.JFrame  implements BookingInterface {
+public class UserBookingView extends javax.swing.JFrame {
     
     private ArrayList<Integer> listIdLapangan = new ArrayList<>();
+    BookingController bc =
+        new BookingController();
 
     /**
      * Creates new form UserBookingView
@@ -34,6 +37,7 @@ public class UserBookingView extends javax.swing.JFrame  implements BookingInter
         loadJamSelesai(0);
         loadLapangan();
         loadJadwal();
+        
         autoRefresh();
         
     }
@@ -275,7 +279,10 @@ public class UserBookingView extends javax.swing.JFrame  implements BookingInter
             int hargaPerJam =
                 DBLapangan.getHargaLapangan(lapangan);
 
-            int total = durasi * hargaPerJam;
+            int total = bc.hitungTotal(
+                    durasi,
+                    hargaPerJam
+                );
 
             // tampilkan ke label
             lblHargaPerJam.setText("Rp " + hargaPerJam);
@@ -292,19 +299,25 @@ public class UserBookingView extends javax.swing.JFrame  implements BookingInter
     }
     
     // method booking
-    @Override
+    
     public void booking() {
 
         try {
 
-            String nama = jTextFieldNama.getText();
-            if (nama.isEmpty()) {
-                JOptionPane.showMessageDialog(
-                    this,
-                    "Nama tidak boleh kosong!"
-                );
-                return;
-            }
+                    String nama =
+                 jTextFieldNama.getText();
+
+         if (
+             !bc.validasiNama(nama)
+         ) {
+
+             JOptionPane.showMessageDialog(
+                 this,
+                 "Nama tidak boleh kosong!"
+             );
+
+             return;
+         }
 
             String lapangan = cbLapangan.getSelectedItem().toString();
             
@@ -320,11 +333,18 @@ public class UserBookingView extends javax.swing.JFrame  implements BookingInter
                 return;
             }
 
-            int index =
-            cbLapangan.getSelectedIndex();
+            int index = cbLapangan.getSelectedIndex();
+            if (index < 0 || index >= listIdLapangan.size()) {
 
-         int idLapangan =
-                 listIdLapangan.get(index);
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Lapangan tidak tersedia!"
+                );
+
+                return;
+            }
+            
+            int idLapangan = listIdLapangan.get(index);
          
             if (jDateChooser1.getDate() == null) {
                 JOptionPane.showMessageDialog(
@@ -356,11 +376,16 @@ public class UserBookingView extends javax.swing.JFrame  implements BookingInter
             calBooking.set(Calendar.MILLISECOND, 0);
             
             // validasi tanggal
-            if (calBooking.before(calHariIni)) {
+            if (!bc.validasiTanggal(
+                    calBooking,
+                    calHariIni
+                )
+            ) {
+
                 JOptionPane.showMessageDialog(
-                    this,
-                    "Tidak bisa booking tanggal yang sudah lewat!"
+                    this, "Tidak bisa booking tanggal yang sudah lewat!"
                 );
+
                 return;
             }
             
@@ -418,7 +443,10 @@ public class UserBookingView extends javax.swing.JFrame  implements BookingInter
 
             int hargaPerJam = DBLapangan.getHargaLapangan(lapangan);
 
-            int totalHarga = durasi * hargaPerJam;
+            int totalHarga = bc.hitungTotal(
+                durasi,
+                hargaPerJam
+            );
 
             // alert konfirmasi
             String pesan =

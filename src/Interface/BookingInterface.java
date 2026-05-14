@@ -9,6 +9,9 @@ package Interface;
  * @author ASUS
  */
 public interface BookingInterface {
-    void booking();
+    int hitungTotal(
+            int durasi,
+            int hargaPerJam
+    );
     
 }
