@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import java.util.ArrayList;
 import Interface.BookingInterface;
 import Controller.BookingController;
+import Model.BookingModel;
 
 /**
  *
@@ -298,26 +299,105 @@ public class UserBookingView extends javax.swing.JFrame {
         }
     }
     
+    private BookingModel ambilDataForm() {
+
+        BookingModel booking =
+                new BookingModel();
+
+        String nama =
+                jTextFieldNama.getText();
+
+        booking.setNama(nama);
+
+        int index =
+                cbLapangan.getSelectedIndex();
+
+        int idLapangan =
+                listIdLapangan.get(index);
+
+        booking.setIdLapangan(idLapangan);
+
+        SimpleDateFormat sdf =
+                new SimpleDateFormat(
+                        "yyyy-MM-dd"
+                );
+
+        String tanggal =
+                sdf.format(
+                        jDateChooser1.getDate()
+                );
+
+        booking.setTanggal(tanggal);
+
+        String jamMulai =
+                cbJamMulai
+                        .getSelectedItem()
+                        .toString();
+
+        booking.setJamMulai(jamMulai);
+
+        String jamSelesai =
+                cbJamSelesai
+                        .getSelectedItem()
+                        .toString();
+
+        booking.setJamSelesai(jamSelesai);
+
+        int mulai =
+                Integer.parseInt(
+                        jamMulai.substring(0, 2)
+                );
+
+        int selesai =
+                Integer.parseInt(
+                        jamSelesai.substring(0, 2)
+                );
+
+        int durasi =
+                selesai - mulai;
+
+        booking.setDurasi(durasi);
+
+        String lapangan =
+                cbLapangan
+                        .getSelectedItem()
+                        .toString();
+
+        int hargaPerJam =
+                DBLapangan.getHargaLapangan(
+                        lapangan
+                );
+
+        int totalHarga =
+                bc.hitungTotal(
+                        durasi,
+                        hargaPerJam
+                );
+
+        booking.setTotalHarga(
+                totalHarga
+        );
+
+        booking.setStatus("aktif");
+
+        return booking;
+    }
+    
     // method booking
     
     public void booking() {
 
         try {
+            BookingModel booking = ambilDataForm();
 
-                    String nama =
-                 jTextFieldNama.getText();
+            if (!bc.validasiNama(booking.getNama())) {
 
-         if (
-             !bc.validasiNama(nama)
-         ) {
+               JOptionPane.showMessageDialog(
+                   this, "Nama tidak boleh kosong!"
+               );
 
-             JOptionPane.showMessageDialog(
-                 this,
-                 "Nama tidak boleh kosong!"
-             );
-
-             return;
-         }
+                return;
+            }
 
             String lapangan = cbLapangan.getSelectedItem().toString();
             
@@ -343,9 +423,7 @@ public class UserBookingView extends javax.swing.JFrame {
 
                 return;
             }
-            
-            int idLapangan = listIdLapangan.get(index);
-         
+                
             if (jDateChooser1.getDate() == null) {
                 JOptionPane.showMessageDialog(
                     this,
@@ -353,9 +431,6 @@ public class UserBookingView extends javax.swing.JFrame {
                 );
                 return;
             }
-
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            String tanggal = sdf.format(jDateChooser1.getDate());
             
             Date tanggalBooking = jDateChooser1.getDate();
             Date hariIni = new Date();
@@ -398,22 +473,26 @@ public class UserBookingView extends javax.swing.JFrame {
             maxBooking.set(Calendar.SECOND, 0);
             maxBooking.set(Calendar.MILLISECOND, 0);
 
-            if (calBooking.after(maxBooking)) {
+            if (!bc.validasiMaksimalBooking(
+                        calBooking,
+                        maxBooking
+                    )
+                ) {
+
                 JOptionPane.showMessageDialog(
                     this,
                     "Booking hanya bisa maksimal H+3!"
                 );
+
                 return;
             }
 
-            String jamMulai =
-                cbJamMulai.getSelectedItem().toString();
-            String jamSelesai =
-                cbJamSelesai.getSelectedItem().toString();
-
             int jamBooking =
-                Integer.parseInt(jamMulai.substring(0, 2));
-
+            Integer.parseInt(
+                booking.getJamMulai()
+                    .substring(0, 2)
+            );
+            
             // validasi jam (realtime)
             Calendar sekarang = Calendar.getInstance();
 
@@ -421,42 +500,38 @@ public class UserBookingView extends javax.swing.JFrame {
                 sekarang.get(Calendar.HOUR_OF_DAY);
 
             // jika booking untuk hari ini
-            if (
-                calBooking.get(Calendar.YEAR)
-                    == calHariIni.get(Calendar.YEAR) &&
-                calBooking.get(Calendar.DAY_OF_YEAR)
-                    == calHariIni.get(Calendar.DAY_OF_YEAR) &&
-                jamBooking < jamSekarang
+            if (!bc.validasiJamBooking(
+                        calBooking,
+                        calHariIni,
+                        jamBooking,
+                        jamSekarang
+                )
             ) {
 
                 JOptionPane.showMessageDialog(
-                    this, "Jam booking sudah lewat!"
+                        this,
+                        "Jam booking sudah lewat!"
                 );
 
                 return;
             }
 
-            int mulai = Integer.parseInt(jamMulai.substring(0, 2));
-            int selesai = Integer.parseInt(jamSelesai.substring(0, 2));
-
-            int durasi = selesai - mulai;
-
-            int hargaPerJam = DBLapangan.getHargaLapangan(lapangan);
-
-            int totalHarga = bc.hitungTotal(
-                durasi,
-                hargaPerJam
-            );
-
             // alert konfirmasi
-            String pesan =
-                    "Konfirmasi Booking:\n\n"
-                    + "Lapangan : " + lapangan + "\n"
-                    + "Tanggal  : " + tanggal + "\n"
-                    + "Jam      : " + jamMulai + " - " + jamSelesai + "\n"
-                    + "Durasi   : " + durasi + " jam\n"
-                    + "Total    : Rp " + totalHarga;
-
+            String pesan = "Konfirmasi Booking:\n\n"
+                + "Lapangan : " + lapangan + "\n"
+                + "Tanggal  : "
+                    + booking.getTanggal() + "\n"
+                + "Jam      : "
+                    + booking.getJamMulai()
+                    + " - "
+                    + booking.getJamSelesai()
+                    + "\n"
+                + "Durasi   : "
+                    + booking.getDurasi()
+                    + " jam\n"
+                + "Total    : Rp "
+                    + booking.getTotalHarga();
+            
             int konfirmasi = JOptionPane.showConfirmDialog(
                     this,
                     pesan,
@@ -466,12 +541,7 @@ public class UserBookingView extends javax.swing.JFrame {
 
             // jika Yes
             if (konfirmasi == JOptionPane.YES_OPTION) {
-                boolean bentrok = DBBooking.cekBentrok(
-                    idLapangan,
-                    tanggal,
-                    jamMulai,
-                    jamSelesai
-                );
+                boolean bentrok =  bc.cekBentrok(booking);
 
                 if (bentrok) {
                     JOptionPane.showMessageDialog(
@@ -483,17 +553,14 @@ public class UserBookingView extends javax.swing.JFrame {
 
                     return;
                 }
+                booking.setStatus("aktif");
+                
+                String hasil = bc.booking(booking);
 
-                DBBooking.tambahBooking(
-                        nama,
-                        idLapangan,
-                        tanggal,
-                        jamMulai,
-                        jamSelesai,
-                        durasi,
-                        totalHarga,
-                        "aktif"
-                );
+                    JOptionPane.showMessageDialog(
+                            this,
+                            hasil
+                    );
 
                 JOptionPane.showMessageDialog(
                         this,
