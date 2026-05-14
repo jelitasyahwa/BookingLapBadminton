@@ -5,12 +5,18 @@
 package View;
 import Helper.DBAdmin;
 import javax.swing.JOptionPane;
+import Model.AdminModel;
+import Controller.AdminController;
 
 /**
  *
  * @author ASUS
  */
 public class LoginAdminView extends javax.swing.JFrame {
+       int kesempatanLogin = 3;
+       
+          AdminController ac =
+            new AdminController();
 
     /**
      * Creates new form LoginAdminView
@@ -22,35 +28,6 @@ public class LoginAdminView extends javax.swing.JFrame {
     
 }
    
-    private void loginAdmin() {
-
-        String username = Username.getText();
-
-        String password =
-                String.valueOf(Password.getPassword());
-
-        boolean login =
-                DBAdmin.login(username, password);
-
-        if (login) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Login berhasil"
-            );
-
-            new LoginAdminView().setVisible(true);
-
-            this.dispose();
-
-        } else {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Username atau password salah"
-            );
-        }
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -208,12 +185,18 @@ public class LoginAdminView extends javax.swing.JFrame {
                 String.valueOf(
                         Password.getPassword()
                 );
+        
+        AdminModel admin =
+        new AdminModel(
+                username,
+                password
+        );
 
         boolean login =
-                DBAdmin.login(
-                        username,
-                        password
-                );
+            DBAdmin.login(
+                    username,
+                    password
+            );
 
         if (login) {
             JOptionPane.showMessageDialog(
@@ -221,18 +204,32 @@ public class LoginAdminView extends javax.swing.JFrame {
                     "Login berhasil"
             );
 
-            new AdminView(username)
-        .setVisible(true);
+            new AdminView(username).setVisible(true);
 
             this.dispose();
 
         } else {
 
+            kesempatanLogin--;
+
             JOptionPane.showMessageDialog(
                     this,
-                    "Username atau password salah"
+                    "Username atau password salah!\n"
+                    + "Sisa kesempatan: "
+                    + kesempatanLogin
             );
 
+        if (kesempatanLogin == 0) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Kesempatan login habis!\n"
+                    + "Program akan ditutup."
+            );
+
+            System.exit(0);
+
+            }
         }
     }//GEN-LAST:event_LoginActionPerformed
 

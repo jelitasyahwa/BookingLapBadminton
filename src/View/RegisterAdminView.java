@@ -5,12 +5,14 @@
 package View;
 import javax.swing.JOptionPane;
 import Helper.DBAdmin;
+import Controller.AdminController;
 /**
  *
  * @author ASUS
  */
 public class RegisterAdminView extends javax.swing.JFrame {
-
+    AdminController ac =
+            new AdminController();
     /**
      * Creates new form RegisterAdminView
      */
@@ -156,49 +158,58 @@ public class RegisterAdminView extends javax.swing.JFrame {
         String username =
          Username.getText();
 
- String password =
-         Password.getText();
+        String password =
+                Password.getText();
 
- String confirm =
-         ConfirmPassword.getText();
+        String confirm =
+                ConfirmPassword.getText();
 
- if (
-     username.isEmpty()
-     || password.isEmpty()
-     || confirm.isEmpty()
- ) {
+        if (
+            username.isEmpty()
+            || password.isEmpty()
+            || confirm.isEmpty()
+        ) {
 
-     JOptionPane.showMessageDialog(
-             this,
-             "Data tidak boleh kosong!"
-     );
+            JOptionPane.showMessageDialog(
+                     this,
+                     "Data tidak boleh kosong!"
+             );
 
-     return;
- }
+             return;
+         }
 
- if (!password.equals(confirm)) {
+         if (!password.equals(confirm)) {
 
-     JOptionPane.showMessageDialog(
-             this,
-             "Password tidak sama!"
-     );
+             JOptionPane.showMessageDialog(
+                     this,
+                     "Password tidak sama!"
+             );
 
-     return;
- }
+             return;
+         }
 
- DBAdmin.registerAdmin(
-         username,
-         password
- );
+         if (ac.cekUsername(username)) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Username sudah digunakan!"
+            );
 
- JOptionPane.showMessageDialog(
-         this,
-         "Register berhasil!"
- );
+            return;
+        }
 
- new LoginAdminView().setVisible(true);
+        ac.register(
+                username,
+                password
+        );
 
- dispose();
+         JOptionPane.showMessageDialog(
+                 this,
+                 "Register berhasil!"
+         );
+
+         new LoginAdminView().setVisible(true);
+
+         dispose();
     }//GEN-LAST:event_RegisterActionPerformed
 
     private void KembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KembaliActionPerformed

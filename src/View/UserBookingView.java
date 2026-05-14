@@ -34,8 +34,35 @@ public class UserBookingView extends javax.swing.JFrame  implements BookingInter
         loadJamSelesai(0);
         loadLapangan();
         loadJadwal();
+        autoRefresh();
         
     }
+    
+    private void autoRefresh() {
+
+    Thread t = new Thread(() -> {
+
+        while (true) {
+
+            try {
+
+                loadJadwal();
+
+                Thread.sleep(5000);
+
+            } catch (Exception e) {
+
+                System.out.println(e);
+
+            }
+
+        }
+
+    });
+
+    t.start();
+}
+
     
     // method jam mulai
     private void loadJamMulai() {
@@ -293,14 +320,12 @@ public class UserBookingView extends javax.swing.JFrame  implements BookingInter
                 return;
             }
 
-            int idLapangan = 1;
+            int index =
+            cbLapangan.getSelectedIndex();
 
-            if (lapangan.equals("Lapangan B")) {
-                idLapangan = 2;
-            } else if (lapangan.equals("Lapangan VIP")) {
-                idLapangan = 3;
-            }
-
+         int idLapangan =
+                 listIdLapangan.get(index);
+         
             if (jDateChooser1.getDate() == null) {
                 JOptionPane.showMessageDialog(
                     this,
@@ -804,3 +829,4 @@ public class UserBookingView extends javax.swing.JFrame  implements BookingInter
     private javax.swing.JTable tableJadwal;
     // End of variables declaration//GEN-END:variables
 }
+

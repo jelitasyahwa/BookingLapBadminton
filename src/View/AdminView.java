@@ -8,6 +8,7 @@ import Helper.DBLapangan;
 import java.sql.ResultSet;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
+import Controller.LapanganController;
 
 /**
  *
@@ -15,6 +16,8 @@ import javax.swing.JOptionPane;
  */
 public class AdminView extends javax.swing.JFrame {
     int idLapangan = 0;
+    LapanganController lc =
+        new LapanganController();
     /**
      * Creates new form AdminView
      */
@@ -555,9 +558,9 @@ public class AdminView extends javax.swing.JFrame {
 
 if (konfirmasi == JOptionPane.YES_OPTION) {
 
-    DBLapangan.hapusLapangan(
-            idLapangan
-    );
+    lc.hapusLapangan(
+        idLapangan
+);
 
     JOptionPane.showMessageDialog(
             this,
@@ -585,12 +588,12 @@ if (konfirmasi == JOptionPane.YES_OPTION) {
             cbStatus.getSelectedItem()
                     .toString();
 
-    DBLapangan.editLapangan(
-            idLapangan,
-            nama,
-            harga,
-            status
-    );
+    lc.editLapangan(
+        idLapangan,
+        nama,
+        harga,
+        status
+);
 
     JOptionPane.showMessageDialog(
             this,
@@ -616,11 +619,11 @@ loadTableLapangan();
             cbStatus.getSelectedItem()
                     .toString();
 
-        DBLapangan.tambahLapangan(
-            nama,
-            harga,
-            status
-        );
+        lc.tambahLapangan(
+        nama,
+        harga,
+        status
+);
 
         JOptionPane.showMessageDialog(
                 this,

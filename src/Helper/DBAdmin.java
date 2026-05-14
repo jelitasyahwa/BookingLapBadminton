@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+
 /**
  *
  * @author ASUS
@@ -49,37 +50,75 @@ public class DBAdmin {
     }
     
 
-public static void registerAdmin(
-        String username,
-        String password
-) {
+    public static void registerAdmin(
+            String username,
+            String password
+    ) {
 
-    try {
+        try {
 
-        Connection conn =
-                DBHelper.getConnection();
+            Connection conn =
+                    DBHelper.getConnection();
 
-        String sql =
-                "INSERT INTO admin "
-                + "(username, password) "
-                + "VALUES (?, ?)";
+            String sql =
+                    "INSERT INTO admin "
+                    + "(username, password) "
+                    + "VALUES (?, ?)";
 
-        PreparedStatement ps =
-                conn.prepareStatement(sql);
+            PreparedStatement ps =
+                    conn.prepareStatement(sql);
 
-        ps.setString(1, username);
-        ps.setString(2, password);
+            ps.setString(1, username);
+            ps.setString(2, password);
 
-        ps.executeUpdate();
+            ps.executeUpdate();
 
-        System.out.println(
-                "Register berhasil"
-        );
+            System.out.println(
+                    "Register berhasil"
+            );
 
-    } catch (Exception e) {
+        } catch (Exception e) {
 
-        System.out.println(e);
+            System.out.println(e);
 
+        }
     }
-}
+
+        public static boolean cekUsername(
+            String username
+    ) {
+
+        boolean ada = false;
+
+        try {
+
+            Connection conn =
+                    DBHelper.getConnection();
+
+            String sql =
+                    "SELECT * FROM admin "
+                    + "WHERE username=?";
+
+            PreparedStatement ps =
+                    conn.prepareStatement(sql);
+
+            ps.setString(1, username);
+
+            ResultSet rs =
+                    ps.executeQuery();
+
+            if (rs.next()) {
+
+                ada = true;
+
+            }
+
+        } catch (Exception e) {
+
+            System.out.println(e);
+
+        }
+
+        return ada;
+    }
 }
