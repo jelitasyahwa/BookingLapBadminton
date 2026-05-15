@@ -8,7 +8,7 @@ package Model;
  *
  * @author ASUS
  */
-public class UserModel {
+public abstract class UserModel {
      protected String username;
      protected String password;
 
@@ -50,11 +50,6 @@ public class UserModel {
 
     }
 
-    public void login() {
+    public abstract void login();
 
-        System.out.println(
-                "User Login"
-        );
-
-    }
 }

@@ -278,7 +278,7 @@ public class UserBookingView extends javax.swing.JFrame {
             String lapangan = cbLapangan.getSelectedItem().toString();
 
             int hargaPerJam =
-                DBLapangan.getHargaLapangan(lapangan);
+    bc.getHargaLapangan(lapangan);
 
             int total = bc.hitungTotal(
                     durasi,
@@ -364,10 +364,10 @@ public class UserBookingView extends javax.swing.JFrame {
                         .toString();
 
         int hargaPerJam =
-                DBLapangan.getHargaLapangan(
-                        lapangan
-                );
-
+        bc.getHargaLapangan(
+                lapangan
+        );
+        
         int totalHarga =
                 bc.hitungTotal(
                         durasi,
@@ -555,13 +555,12 @@ public class UserBookingView extends javax.swing.JFrame {
                 }
                 booking.setStatus("aktif");
                 
-                String hasil = bc.booking(booking);
+          String hasil = bc.booking(booking);
 
-                    JOptionPane.showMessageDialog(
-                            this,
-                            hasil
-                    );
-
+JOptionPane.showMessageDialog(
+        this,
+        hasil
+);
                 JOptionPane.showMessageDialog(
                         this,
                         "Booking berhasil!"
@@ -570,11 +569,14 @@ public class UserBookingView extends javax.swing.JFrame {
                 loadJadwal();
             }
 
-        } catch (Exception e) {
+        }catch (Exception e) {
 
-            System.out.println(e);
+    JOptionPane.showMessageDialog(
+            this,
+            e.getMessage()
+    );
 
-        }
+}
     }
 
     /**

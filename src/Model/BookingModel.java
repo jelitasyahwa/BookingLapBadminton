@@ -3,12 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Model;
+import Interface.BookingInterface;
 
 /**
  *
  * @author ASUS
  */
-public class BookingModel {
+public class BookingModel implements BookingInterface{
     private String nama;
     private String tanggal;
     private String jamMulai;
@@ -97,5 +98,10 @@ public class BookingModel {
     public void setJamSelesai(String jamSelesai) {
         this.jamSelesai = jamSelesai;
     }
+    
+    @Override
+public int hitungTotal(int durasi, int hargaPerJam) {
+    return durasi * hargaPerJam;
+}
     
 }

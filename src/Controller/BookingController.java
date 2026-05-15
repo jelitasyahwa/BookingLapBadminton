@@ -8,27 +8,28 @@ import Interface.BookingInterface;
 import java.util.Calendar;
 import Helper.DBBooking;
 import Model.BookingModel;
+import Exception.BookingException;
+import Helper.DBLapangan;
 
 /**
  *
  * @author ASUS
  */
 public class BookingController implements BookingInterface {
-    // validasi nama
     public boolean validasiNama(String nama) {
         return !nama.trim().isEmpty();
     }
-    
+
     // validasi tanggal
     public boolean validasiTanggal(
             Calendar booking,
             Calendar hariIni
     ) {
-        
+
         return !booking.before(hariIni);
-        
+
     }
-    
+
     // validasi maksimal booking
     public boolean validasiMaksimalBooking(
             Calendar booking,
@@ -38,24 +39,24 @@ public class BookingController implements BookingInterface {
         return !booking.after(maksimal);
 
     }
-    
+
     // validasi jam booking
     public boolean validasiJamBooking(
-        Calendar booking,
-        Calendar hariIni,
-        int jamBooking,
-        int jamSekarang
+            Calendar booking,
+            Calendar hariIni,
+            int jamBooking,
+            int jamSekarang
     ) {
 
         // jika booking untuk hari ini
         if (
-            booking.get(Calendar.YEAR)
+                booking.get(Calendar.YEAR)
                 == hariIni.get(Calendar.YEAR)
-            &&
-            booking.get(Calendar.DAY_OF_YEAR)
+                &&
+                booking.get(Calendar.DAY_OF_YEAR)
                 == hariIni.get(Calendar.DAY_OF_YEAR)
-            &&
-            jamBooking < jamSekarang
+                &&
+                jamBooking < jamSekarang
         ) {
 
             return false;
@@ -63,68 +64,73 @@ public class BookingController implements BookingInterface {
 
         return true;
     }
-    
+
     @Override
     // hitung total harga
     public int hitungTotal(
             int durasi,
             int hargaPerJam
     ) {
+
         return durasi * hargaPerJam;
+
     }
 
     // cek bentrok
     public boolean cekBentrok(
             BookingModel booking
-        ) {
+    ) {
 
-            return DBBooking.cekBentrok(
+        return DBBooking.cekBentrok(
 
-                    booking.getIdLapangan(),
+                booking.getIdLapangan(),
 
-                    booking.getTanggal(),
+                booking.getTanggal(),
 
-                    booking.getJamMulai(),
+                booking.getJamMulai(),
 
-                    booking.getJamSelesai()
-            );
-        }
-     
+                booking.getJamSelesai()
+        );
+    }
+
     // tambah booking
     public void tambahBooking(
             BookingModel booking
-        ) {
+    ) {
 
-            DBBooking.tambahBooking(
+        DBBooking.tambahBooking(
 
-                    booking.getNama(),
+                booking.getNama(),
 
-                    booking.getIdLapangan(),
+                booking.getIdLapangan(),
 
-                    booking.getTanggal(),
+                booking.getTanggal(),
 
-                    booking.getJamMulai(),
+                booking.getJamMulai(),
 
-                    booking.getJamSelesai(),
+                booking.getJamSelesai(),
 
-                    booking.getDurasi(),
+                booking.getDurasi(),
 
-                    booking.getTotalHarga(),
+                booking.getTotalHarga(),
 
-                    booking.getStatus()
-            );
-        }
+                booking.getStatus()
+        );
+    }
 
+    // proses booking
     public String booking(
             BookingModel booking
-    ) {
+    ) throws BookingException {
 
         // validasi nama
         if (!validasiNama(
                 booking.getNama()
         )) {
 
-            return "Nama tidak boleh kosong!";
+            throw new BookingException(
+                    "Nama tidak boleh kosong!"
+            );
         }
 
         // cek bentrok
@@ -133,7 +139,9 @@ public class BookingController implements BookingInterface {
 
         if (bentrok) {
 
-            return "Jadwal sudah terisi!";
+            throw new BookingException(
+                    "Jadwal sudah terisi!"
+            );
         }
 
         // insert booking
@@ -141,4 +149,11 @@ public class BookingController implements BookingInterface {
 
         return "Booking berhasil!";
     }
+    
+    public int getHargaLapangan(String lapangan) {
+
+    return DBLapangan.getHargaLapangan(
+            lapangan
+    );
+}
 }
