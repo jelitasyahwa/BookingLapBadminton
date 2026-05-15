@@ -6,6 +6,8 @@ package Controller;
 
 import Interface.BookingInterface;
 import java.util.Calendar;
+import Helper.DBBooking;
+import Model.BookingModel;
 
 /**
  *
@@ -17,8 +19,53 @@ public class BookingController implements BookingInterface {
         return !nama.trim().isEmpty();
     }
     
+    // validasi tanggal
+    public boolean validasiTanggal(
+            Calendar booking,
+            Calendar hariIni
+    ) {
+        
+        return !booking.before(hariIni);
+        
+    }
+    
+    // validasi maksimal booking
+    public boolean validasiMaksimalBooking(
+            Calendar booking,
+            Calendar maksimal
+    ) {
+
+        return !booking.after(maksimal);
+
+    }
+    
+    // validasi jam booking
+    public boolean validasiJamBooking(
+        Calendar booking,
+        Calendar hariIni,
+        int jamBooking,
+        int jamSekarang
+    ) {
+
+        // jika booking untuk hari ini
+        if (
+            booking.get(Calendar.YEAR)
+                == hariIni.get(Calendar.YEAR)
+            &&
+            booking.get(Calendar.DAY_OF_YEAR)
+                == hariIni.get(Calendar.DAY_OF_YEAR)
+            &&
+            jamBooking < jamSekarang
+        ) {
+
+            return false;
+        }
+
+        return true;
+    }
+    
     @Override
-    // method hitung total harga
+    // hitung total harga
     public int hitungTotal(
             int durasi,
             int hargaPerJam
@@ -26,12 +73,72 @@ public class BookingController implements BookingInterface {
         return durasi * hargaPerJam;
     }
 
-    public boolean validasiTanggal(
-            Calendar booking,
-            Calendar hariIni
+    // cek bentrok
+    public boolean cekBentrok(
+            BookingModel booking
+        ) {
+
+            return DBBooking.cekBentrok(
+
+                    booking.getIdLapangan(),
+
+                    booking.getTanggal(),
+
+                    booking.getJamMulai(),
+
+                    booking.getJamSelesai()
+            );
+        }
+     
+    // tambah booking
+    public void tambahBooking(
+            BookingModel booking
+        ) {
+
+            DBBooking.tambahBooking(
+
+                    booking.getNama(),
+
+                    booking.getIdLapangan(),
+
+                    booking.getTanggal(),
+
+                    booking.getJamMulai(),
+
+                    booking.getJamSelesai(),
+
+                    booking.getDurasi(),
+
+                    booking.getTotalHarga(),
+
+                    booking.getStatus()
+            );
+        }
+
+    public String booking(
+            BookingModel booking
     ) {
 
-        return !booking.before(hariIni);
+        // validasi nama
+        if (!validasiNama(
+                booking.getNama()
+        )) {
 
+            return "Nama tidak boleh kosong!";
+        }
+
+        // cek bentrok
+        boolean bentrok =
+                cekBentrok(booking);
+
+        if (bentrok) {
+
+            return "Jadwal sudah terisi!";
+        }
+
+        // insert booking
+        tambahBooking(booking);
+
+        return "Booking berhasil!";
     }
 }

@@ -13,6 +13,10 @@ public class BookingModel {
     private String tanggal;
     private String jamMulai;
     private String jamSelesai;
+    private int idLapangan;
+    private int durasi;
+    private int totalHarga;
+    private String status;
 
     public BookingModel() {
     }
@@ -58,9 +62,40 @@ public class BookingModel {
         return jamSelesai;
     }
 
+    public int getIdLapangan() {
+        return idLapangan;
+    }
+
+    public void setIdLapangan(int idLapangan) {
+        this.idLapangan = idLapangan;
+    }
+
+    public int getDurasi() {
+        return durasi;
+    }
+
+    public void setDurasi(int durasi) {
+        this.durasi = durasi;
+    }
+
+    public int getTotalHarga() {
+        return totalHarga;
+    }
+
+    public void setTotalHarga(int totalHarga) {
+        this.totalHarga = totalHarga;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public void setJamSelesai(String jamSelesai) {
         this.jamSelesai = jamSelesai;
     }
-
     
 }
