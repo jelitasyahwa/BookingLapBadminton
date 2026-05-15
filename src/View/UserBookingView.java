@@ -3,18 +3,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package View;
-import Helper.DBLapangan;
-import java.sql.ResultSet;
-import Helper.DBBooking;
+
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Calendar;
-import javax.swing.JOptionPane;
 import java.util.ArrayList;
-import Interface.BookingInterface;
-import Controller.BookingController;
 import Model.BookingModel;
+import Model.LapanganModel;
+import Controller.BookingController;
 
 /**
  *
@@ -23,16 +20,13 @@ import Model.BookingModel;
 public class UserBookingView extends javax.swing.JFrame {
     
     private ArrayList<Integer> listIdLapangan = new ArrayList<>();
-    BookingController bc =
-        new BookingController();
+    private final BookingController bc = new BookingController();
 
-    /**
-     * Creates new form UserBookingView
-     */
     public UserBookingView() {
         initComponents();
         
-        DBBooking.updateStatusSelesai();
+        jDateChooser1.setDate(new Date());
+        bc.updateStatusSelesai();
         
         loadJamMulai();
         loadJamSelesai(0);
@@ -44,224 +38,138 @@ public class UserBookingView extends javax.swing.JFrame {
     }
     
     private void autoRefresh() {
-
-    Thread t = new Thread(() -> {
-
-        while (true) {
-
-            try {
-
-                loadJadwal();
-
-                Thread.sleep(5000);
-
-            } catch (Exception e) {
-
-                System.out.println(e);
-
+        Thread t = new Thread(() -> {
+            while (true) {
+                try {
+                    loadJadwal();
+                    Thread.sleep(5000);
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
             }
+        });
+        t.start();
+    }
 
-        }
-
-    });
-
-    t.start();
-}
-
-    
-    // method jam mulai
     private void loadJamMulai() {
-
         cbJamMulai.removeAllItems();
-
-        String[] jam = {
-            "07:00",
-            "08:00",
-            "09:00",
-            "10:00",
-            "11:00",
-            "12:00",
-            "13:00",
-            "14:00",
-            "15:00",
-            "16:00",
-            "17:00",
-            "18:00",
-            "19:00",
-            "20:00",
-            "21:00"
-        };
-
-        for (String j : jam) {
+        for (String j : bc.getJamMulai()) {
             cbJamMulai.addItem(j);
         }
     }
     
-    // method jam selesai
     private void loadJamSelesai(int mulaiIndex) {
-
         cbJamSelesai.removeAllItems();
-
-        String[] jam = {
-            "08:00",
-            "09:00",
-            "10:00",
-            "11:00",
-            "12:00",
-            "13:00",
-            "14:00",
-            "15:00",
-            "16:00",
-            "17:00",
-            "18:00",
-            "19:00",
-            "20:00",
-            "21:00",
-            "22:00"
-        };
-
+        String[] jam = bc.getJamSelesai();
         for (int i = mulaiIndex; i < jam.length; i++) {
             cbJamSelesai.addItem(jam[i]);
         }
     }
     
-    // method lapangan
     private void loadLapangan() {
-
         try {
-
             cbLapangan.removeAllItems();
-
-            ResultSet rs = DBLapangan.getLapangan();
-
-            while (rs.next()) {
-
-                cbLapangan.addItem(rs.getString("nama_lapangan"));
-
+            ArrayList<LapanganModel> listLapangan =
+                    bc.getDataLapangan();
+            for (LapanganModel lapangan : listLapangan) {
+                cbLapangan.addItem(
+                        lapangan.getNamaLapangan()
+                );
             }
-
         } catch (Exception e) {
-
-            System.out.println("Gagal load lapangan");
-            System.out.println(e);
-
+            e.printStackTrace();
         }
     }
     
-    // method jadwal
-    private void loadJadwal() {
-
-        DefaultTableModel model = new DefaultTableModel() {
+    private DefaultTableModel createJadwalModel() {
+        return new DefaultTableModel() {
 
             @Override
-            public boolean isCellEditable(int row,int column) {
+            public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
+    }
+    
+    private ArrayList<String> loadDataLapangan(
+        DefaultTableModel model
+    ) {
 
+        ArrayList<String> listStatusLapangan =
+                new ArrayList<>();
+
+        ArrayList<LapanganModel> listLapangan =
+                bc.getDataLapangan();
+
+        for (LapanganModel lapangan : listLapangan) {
+
+            model.addColumn(
+                    lapangan.getNamaLapangan()
+            );
+
+            listIdLapangan.add(
+                    lapangan.getIdLapangan()
+            );
+
+            listStatusLapangan.add(
+                    lapangan.getStatus()
+            );
+        }
+
+        return listStatusLapangan;
+    }
+    
+    private void loadRowJadwal(
+        DefaultTableModel model,
+        ArrayList<String> listStatusLapangan
+    ) {
+
+        String tanggal = getTanggalDipilih();
+
+        for (int jam = 7; jam < 22; jam++) {
+
+            String jamMulai = String.format("%02d:00", jam);
+
+            String jamSelesai = String.format("%02d:00", jam + 1);
+
+            String waktu = jamMulai + " - " + jamSelesai;
+
+            Object[] row = bc.buatRowJadwal(
+                        waktu, listIdLapangan,
+                        listStatusLapangan,
+                        tanggal, jamMulai
+                );
+            model.addRow(row);
+        }
+    }
+    
+    private String getTanggalDipilih() {
+        if (jDateChooser1.getDate() == null) {
+            return "";
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(jDateChooser1.getDate());
+    }
+    
+    private void loadJadwal() {
+        DefaultTableModel model = createJadwalModel();
         model.addColumn("Jam");
 
         listIdLapangan.clear();
 
         try {
-
-            ResultSet rsLapangan =
-                    DBLapangan.getLapangan();
-
-            ArrayList<String> listNamaLapangan = new ArrayList<>();
-            ArrayList<String> listStatusLapangan = new ArrayList<>();
-
-            while (rsLapangan.next()) {
-
-                model.addColumn(
-                        rsLapangan.getString(
-                                "nama_lapangan"
-                        )
-                );
-
-                listIdLapangan.add(
-                        rsLapangan.getInt(
-                                "id_lapangan"
-                        )
-                );
-
-                listNamaLapangan.add(
-                        rsLapangan.getString(
-                                "nama_lapangan"
-                        )
-                );
-
-                listStatusLapangan.add(
-                        rsLapangan.getString(
-                                "status"
-                        )
-                );
-            }
-
-            for (int jam = 7; jam < 22; jam++) {
-
-                String jamMulai = String.format("%02d:00", jam);
-                String jamSelesai = String.format("%02d:00", jam + 1);
-
-                String waktu = jamMulai + " - " + jamSelesai;
-                String tanggal = "";
-
-                if (jDateChooser1.getDate() != null) {
-                    SimpleDateFormat sdf =
-                        new SimpleDateFormat(
-                            "yyyy-MM-dd"
-                        );
-                    tanggal = sdf.format(
-                        jDateChooser1.getDate()
-                    );
-                }
-
-                Object[] row = new Object[
-                    listIdLapangan.size() + 1
-                ];
-
-                row[0] = waktu;
-
-                for (int i = 0; i < listIdLapangan.size(); i++) {
-
-                    int idLapangan = listIdLapangan.get(i);
-
-                    String statusLap = listStatusLapangan.get(i);
-                    String status = "Tersedia";
-
-                    // cek maintenance
-                    if ( statusLap.equals(
-                            "maintenance"
-                            )
-                        ) {
-                            status = "Maintenance";
-                        }
-
-                    // cek booking
-                    else if ( DBBooking.cekBooking(
-                                idLapangan,
-                                tanggal,
-                                jamMulai
-                                )
-                            ) {
-                                status = "Terisi";
-                            }
-                            row[i + 1] = status;
-                        }
-                        model.addRow(row);
-                    }
-                    tableJadwal.setModel(model);
-
+            ArrayList<String> listStatusLapangan = loadDataLapangan(model);
+            loadRowJadwal(model, listStatusLapangan);
+            tableJadwal.setModel(model);
+        
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 
-    // method total harga
     private void hitungTotal() {
-
-        try {
-            
+        try {            
             if (cbJamMulai.getSelectedItem() == null ||
                 cbJamSelesai.getSelectedItem() == null) {
                 return;
@@ -270,313 +178,84 @@ public class UserBookingView extends javax.swing.JFrame {
             String jamMulai = cbJamMulai.getSelectedItem().toString();
             String jamSelesai = cbJamSelesai.getSelectedItem().toString();
 
-            int mulai = Integer.parseInt(jamMulai.substring(0, 2));
-            int selesai = Integer.parseInt(jamSelesai.substring(0, 2));
-
-            int durasi = selesai - mulai;
+            int durasi =
+                bc.hitungDurasi(
+                        jamMulai,
+                        jamSelesai
+                );
 
             String lapangan = cbLapangan.getSelectedItem().toString();
 
-            int hargaPerJam =
-    bc.getHargaLapangan(lapangan);
+            int hargaPerJam = bc.getHargaLapangan(lapangan);
 
-            int total = bc.hitungTotal(
-                    durasi,
-                    hargaPerJam
-                );
+            int total = bc.hitungTotal(durasi, hargaPerJam);
 
             // tampilkan ke label
             lblHargaPerJam.setText("Rp " + hargaPerJam);
-
             lblDurasi.setText(durasi + " jam");
-
             lblTotalHarga.setText("Rp " + total);
 
         } catch (Exception e) {
-
             System.out.println(e);
-
         }
     }
     
     private BookingModel ambilDataForm() {
 
-        BookingModel booking =
-                new BookingModel();
+        String nama = jTextFieldNama.getText();
+        int index = cbLapangan.getSelectedIndex();
+        int idLapangan = listIdLapangan.get(index);
+        String tanggal = bc.formatTanggal(jDateChooser1.getDate());  
+        String jamMulai = cbJamMulai.getSelectedItem().toString();
+        String jamSelesai =cbJamSelesai.getSelectedItem().toString();
+        String namaLapangan = cbLapangan.getSelectedItem().toString();
 
-        String nama =
-                jTextFieldNama.getText();
-
-        booking.setNama(nama);
-
-        int index =
-                cbLapangan.getSelectedIndex();
-
-        int idLapangan =
-                listIdLapangan.get(index);
-
-        booking.setIdLapangan(idLapangan);
-
-        SimpleDateFormat sdf =
-                new SimpleDateFormat(
-                        "yyyy-MM-dd"
-                );
-
-        String tanggal =
-                sdf.format(
-                        jDateChooser1.getDate()
-                );
-
-        booking.setTanggal(tanggal);
-
-        String jamMulai =
-                cbJamMulai
-                        .getSelectedItem()
-                        .toString();
-
-        booking.setJamMulai(jamMulai);
-
-        String jamSelesai =
-                cbJamSelesai
-                        .getSelectedItem()
-                        .toString();
-
-        booking.setJamSelesai(jamSelesai);
-
-        int mulai =
-                Integer.parseInt(
-                        jamMulai.substring(0, 2)
-                );
-
-        int selesai =
-                Integer.parseInt(
-                        jamSelesai.substring(0, 2)
-                );
-
-        int durasi =
-                selesai - mulai;
-
-        booking.setDurasi(durasi);
-
-        String lapangan =
-                cbLapangan
-                        .getSelectedItem()
-                        .toString();
-
-        int hargaPerJam =
-        bc.getHargaLapangan(
-                lapangan
+        return bc.buatBooking(
+                nama,
+                idLapangan,
+                tanggal,
+                jamMulai,
+                jamSelesai,
+                namaLapangan
         );
-        
-        int totalHarga =
-                bc.hitungTotal(
-                        durasi,
-                        hargaPerJam
-                );
-
-        booking.setTotalHarga(
-                totalHarga
-        );
-
-        booking.setStatus("aktif");
-
-        return booking;
     }
     
     // method booking
-    
     public void booking() {
-
         try {
             BookingModel booking = ambilDataForm();
-
-            if (!bc.validasiNama(booking.getNama())) {
-
-               JOptionPane.showMessageDialog(
-                   this, "Nama tidak boleh kosong!"
-               );
-
-                return;
-            }
-
-            String lapangan = cbLapangan.getSelectedItem().toString();
-            
-            String statusLapangan = DBLapangan.getStatusLapangan(lapangan);
-
-            if (statusLapangan.equals("maintenance")) {
-
-                JOptionPane.showMessageDialog(
-                    this,
-                    "Lapangan sedang maintenance!"
-                );
-
-                return;
-            }
-
-            int index = cbLapangan.getSelectedIndex();
-            if (index < 0 || index >= listIdLapangan.size()) {
-
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Lapangan tidak tersedia!"
-                );
-
-                return;
-            }
-                
-            if (jDateChooser1.getDate() == null) {
-                JOptionPane.showMessageDialog(
-                    this,
-                    "Pilih tanggal terlebih dahulu!"
-                );
-                return;
-            }
-            
             Date tanggalBooking = jDateChooser1.getDate();
-            Date hariIni = new Date();
-
-            // reset jam agar hanya compare tanggal
-            Calendar calHariIni = Calendar.getInstance();
-            calHariIni.setTime(hariIni);
-            calHariIni.set(Calendar.HOUR_OF_DAY, 0);
-            calHariIni.set(Calendar.MINUTE, 0);
-            calHariIni.set(Calendar.SECOND, 0);
-            calHariIni.set(Calendar.MILLISECOND, 0);
-
-            Calendar calBooking = Calendar.getInstance();
-            calBooking.setTime(tanggalBooking);
-            calBooking.set(Calendar.HOUR_OF_DAY, 0);
-            calBooking.set(Calendar.MINUTE, 0);
-            calBooking.set(Calendar.SECOND, 0);
-            calBooking.set(Calendar.MILLISECOND, 0);
-            
-            // validasi tanggal
-            if (!bc.validasiTanggal(
-                    calBooking,
-                    calHariIni
-                )
-            ) {
-
-                JOptionPane.showMessageDialog(
-                    this, "Tidak bisa booking tanggal yang sudah lewat!"
-                );
-
-                return;
-            }
-            
-            Calendar maxBooking = Calendar.getInstance();
-            maxBooking.setTime(hariIni);
-            maxBooking.add(Calendar.DAY_OF_MONTH, 3);
-
-            maxBooking.set(Calendar.HOUR_OF_DAY, 0);
-            maxBooking.set(Calendar.MINUTE, 0);
-            maxBooking.set(Calendar.SECOND, 0);
-            maxBooking.set(Calendar.MILLISECOND, 0);
-
-            if (!bc.validasiMaksimalBooking(
-                        calBooking,
-                        maxBooking
-                    )
-                ) {
-
-                JOptionPane.showMessageDialog(
-                    this,
-                    "Booking hanya bisa maksimal H+3!"
-                );
-
-                return;
-            }
-
-            int jamBooking =
-            Integer.parseInt(
-                booking.getJamMulai()
-                    .substring(0, 2)
+            String namaLapangan = cbLapangan.getSelectedItem().toString();
+            String pesan = bc.getDetailBooking(
+                booking,
+                namaLapangan
             );
-            
-            // validasi jam (realtime)
-            Calendar sekarang = Calendar.getInstance();
-
-            int jamSekarang =
-                sekarang.get(Calendar.HOUR_OF_DAY);
-
-            // jika booking untuk hari ini
-            if (!bc.validasiJamBooking(
-                        calBooking,
-                        calHariIni,
-                        jamBooking,
-                        jamSekarang
-                )
-            ) {
-
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Jam booking sudah lewat!"
-                );
-
-                return;
-            }
-
-            // alert konfirmasi
-            String pesan = "Konfirmasi Booking:\n\n"
-                + "Lapangan : " + lapangan + "\n"
-                + "Tanggal  : "
-                    + booking.getTanggal() + "\n"
-                + "Jam      : "
-                    + booking.getJamMulai()
-                    + " - "
-                    + booking.getJamSelesai()
-                    + "\n"
-                + "Durasi   : "
-                    + booking.getDurasi()
-                    + " jam\n"
-                + "Total    : Rp "
-                    + booking.getTotalHarga();
             
             int konfirmasi = JOptionPane.showConfirmDialog(
-                    this,
-                    pesan,
-                    "Konfirmasi Booking",
-                    JOptionPane.YES_NO_OPTION
-            );
-
-            // jika Yes
-            if (konfirmasi == JOptionPane.YES_OPTION) {
-                boolean bentrok =  bc.cekBentrok(booking);
-
-                if (bentrok) {
-                    JOptionPane.showMessageDialog(
-                            this,
-                            "Jadwal sudah terisi!",
-                            "Booking Gagal",
-                            JOptionPane.WARNING_MESSAGE
+                        this, pesan, "Konfirmasi Booking",
+                        JOptionPane.YES_NO_OPTION
                     );
 
-                    return;
-                }
-                booking.setStatus("aktif");
-                
-          String hasil = bc.booking(booking);
+            if (konfirmasi == JOptionPane.YES_OPTION) {
 
-JOptionPane.showMessageDialog(
-        this,
-        hasil
-);
+                String hasil = bc.prosesBooking(
+                        booking,
+                        tanggalBooking,
+                        namaLapangan
+                    );
+
                 JOptionPane.showMessageDialog(
-                        this,
-                        "Booking berhasil!"
+                        this, hasil
                 );
 
                 loadJadwal();
             }
 
-        }catch (Exception e) {
-
-    JOptionPane.showMessageDialog(
-            this,
-            e.getMessage()
-    );
-
-}
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(
+                    this,  e.getMessage()
+            );
+        }
     }
 
     /**
@@ -926,4 +605,3 @@ JOptionPane.showMessageDialog(
     private javax.swing.JTable tableJadwal;
     // End of variables declaration//GEN-END:variables
 }
-

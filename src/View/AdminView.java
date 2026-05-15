@@ -347,7 +347,7 @@ public class AdminView extends javax.swing.JFrame {
                 btnHapusActionPerformed(evt);
             }
         });
-        jPanel7.add(btnHapus, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 90, 30));
+        jPanel7.add(btnHapus, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, 100, 30));
 
         btnClear.setBackground(javax.swing.UIManager.getDefaults().getColor("Actions.Green"));
         btnClear.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -357,7 +357,7 @@ public class AdminView extends javax.swing.JFrame {
                 btnClearActionPerformed(evt);
             }
         });
-        jPanel7.add(btnClear, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 290, 100, 30));
+        jPanel7.add(btnClear, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 290, 100, 30));
 
         btnTambah.setBackground(javax.swing.UIManager.getDefaults().getColor("Actions.Blue"));
         btnTambah.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -368,7 +368,7 @@ public class AdminView extends javax.swing.JFrame {
                 btnTambahActionPerformed(evt);
             }
         });
-        jPanel7.add(btnTambah, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 90, 30));
+        jPanel7.add(btnTambah, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, 100, 30));
 
         btnEdit.setBackground(javax.swing.UIManager.getDefaults().getColor("Actions.Yellow"));
         btnEdit.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -378,7 +378,7 @@ public class AdminView extends javax.swing.JFrame {
                 btnEditActionPerformed(evt);
             }
         });
-        jPanel7.add(btnEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 250, 100, 30));
+        jPanel7.add(btnEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 250, 100, 30));
 
         cbStatus.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         cbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "tersedia", "maintenance" }));
@@ -387,7 +387,7 @@ public class AdminView extends javax.swing.JFrame {
                 cbStatusActionPerformed(evt);
             }
         });
-        jPanel7.add(cbStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 190, 30));
+        jPanel7.add(cbStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 250, 30));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel4.setText("Status");
@@ -398,7 +398,7 @@ public class AdminView extends javax.swing.JFrame {
                 HargaActionPerformed(evt);
             }
         });
-        jPanel7.add(Harga, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 190, 30));
+        jPanel7.add(Harga, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 250, 30));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel3.setText("Harga");
@@ -409,7 +409,7 @@ public class AdminView extends javax.swing.JFrame {
                 NamaLapanganActionPerformed(evt);
             }
         });
-        jPanel7.add(NamaLapangan, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 190, 30));
+        jPanel7.add(NamaLapangan, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 250, 30));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setText("Nama Lapangan");
@@ -420,20 +420,17 @@ public class AdminView extends javax.swing.JFrame {
         panelLapanganLayout.setHorizontalGroup(
             panelLapanganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelLapanganLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(34, 34, 34)
                 .addGroup(panelLapanganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(panelLapanganLayout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(10, 10, 10)
-                .addGroup(panelLapanganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27)
+                .addGroup(panelLapanganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(panelLapanganLayout.createSequentialGroup()
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         panelLapanganLayout.setVerticalGroup(
             panelLapanganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -443,11 +440,11 @@ public class AdminView extends javax.swing.JFrame {
                     .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel5))
-                .addGap(16, 16, 16)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelLapanganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(249, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(253, Short.MAX_VALUE))
         );
 
         panelContent.add(panelLapangan, "card3");
