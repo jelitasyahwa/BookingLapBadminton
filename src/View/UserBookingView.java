@@ -91,44 +91,44 @@ public class UserBookingView extends javax.swing.JFrame {
         };
     }
     
-  private ArrayList<String> loadDataLapangan(
-    DefaultTableModel model,
-    String keyword
-) {
+    private ArrayList<String> loadDataLapangan(
+        DefaultTableModel model,
+        String keyword
+    ) {
 
-        ArrayList<String> listStatusLapangan =
-                new ArrayList<>();
+            ArrayList<String> listStatusLapangan =
+                    new ArrayList<>();
 
-        ArrayList<LapanganModel> listLapangan;
+            ArrayList<LapanganModel> listLapangan;
 
-if (keyword.isEmpty()) {
+    if (keyword.isEmpty()) {
 
-    listLapangan =
-            bc.getDataLapangan();
+        listLapangan =
+                bc.getDataLapangan();
 
-} else {
+    } else {
 
-    listLapangan =
-            bc.cariLapangan(keyword);
-}
-
-        for (LapanganModel lapangan : listLapangan) {
-
-            model.addColumn(
-                    lapangan.getNamaLapangan()
-            );
-
-            listIdLapangan.add(
-                    lapangan.getIdLapangan()
-            );
-
-            listStatusLapangan.add(
-                    lapangan.getStatus()
-            );
-        }
-
-        return listStatusLapangan;
+        listLapangan =
+                bc.cariLapangan(keyword);
     }
+
+            for (LapanganModel lapangan : listLapangan) {
+
+                model.addColumn(
+                        lapangan.getNamaLapangan()
+                );
+
+                listIdLapangan.add(
+                        lapangan.getIdLapangan()
+                );
+
+                listStatusLapangan.add(
+                        lapangan.getStatus()
+                );
+            }
+
+            return listStatusLapangan;
+        }
     
     private void loadRowJadwal(
         DefaultTableModel model,
@@ -154,39 +154,38 @@ if (keyword.isEmpty()) {
         }
     }
     
-private void loadJadwal() {
-    loadJadwal("");
-}
-
-private void loadJadwal(String keyword) {
-
-    DefaultTableModel model =
-            createJadwalModel();
-
-    model.addColumn("Jam");
-
-    listIdLapangan.clear();
-
-    try {
-
-        ArrayList<String> listStatusLapangan =
-                loadDataLapangan(
-                        model,
-                        keyword
-                );
-
-        loadRowJadwal(
-                model,
-                listStatusLapangan
-        );
-
-        tableJadwal.setModel(model);
-
-    } catch (Exception e) {
-
-        System.out.println(e);
+    private void loadJadwal() {
+        loadJadwal("");
     }
-}
+
+    private void loadJadwal(String keyword) {
+
+        DefaultTableModel model =
+                createJadwalModel();
+
+        model.addColumn("Jam");
+
+        listIdLapangan.clear();
+
+        try {
+
+            ArrayList<String> listStatusLapangan =
+                    loadDataLapangan(
+                            model,
+                            keyword
+                    );
+
+            loadRowJadwal(
+                    model,
+                    listStatusLapangan
+            );
+
+            tableJadwal.setModel(model);
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
     
     private String getTanggalDipilih() {
         if (jDateChooser1.getDate() == null) {
@@ -250,7 +249,6 @@ private void loadJadwal(String keyword) {
         );
     }
     
-    // method booking
     public void booking() {
         try {
             BookingModel booking = ambilDataForm();
@@ -280,21 +278,57 @@ private void loadJadwal(String keyword) {
 
                 loadJadwal();
             
-}
+            }
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(
-                    this,  e.getMessage()
+                    this, e.getMessage()
             );
-}
-}
+        }
+    }
 
     private void cariLapangan() {
 
-    String keyword =
-            CariLapangan.getText();
+    try {
 
-    loadJadwal(keyword);
+        String keyword =
+                CariLapangan
+                        .getText()
+                        .trim();
+
+        ArrayList<LapanganModel> list =
+                bc.cariLapangan(keyword);
+
+        if (keyword.isEmpty()) {
+
+            loadLapangan();
+            return;
+        }
+
+        if (list.isEmpty()) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Lapangan tidak ditemukan"
+            );
+
+            return;
+        }
+
+        String hasil =
+                list.get(0).getNamaLapangan();
+
+        cbLapangan.setSelectedItem(hasil);
+
+        JOptionPane.showMessageDialog(
+                this,
+                "Lapangan ditemukan: " + hasil
+        );
+
+    } catch (Exception e) {
+
+        System.out.println(e);
+    }
 }
 
     /**
@@ -416,7 +450,7 @@ private void loadJadwal(String keyword) {
         ));
         jScrollPane1.setViewportView(tableJadwal);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 130, 605, 390));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 130, 600, 390));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
@@ -426,7 +460,7 @@ private void loadJadwal(String keyword) {
         jLabel8.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Form Booking");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 240, 42));
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 240, 42));
 
         jButtonAdmin.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButtonAdmin.setText("Admin");
@@ -435,7 +469,7 @@ private void loadJadwal(String keyword) {
                 jButtonAdminActionPerformed(evt);
             }
         });
-        getContentPane().add(jButtonAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 560, 80, -1));
+        getContentPane().add(jButtonAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 540, 90, 30));
 
         jPanel1.setBackground(new java.awt.Color(245, 245, 245));
 
@@ -507,7 +541,7 @@ private void loadJadwal(String keyword) {
                 CariLapanganActionPerformed(evt);
             }
         });
-        getContentPane().add(CariLapangan, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 80, 610, 30));
+        getContentPane().add(CariLapangan, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 80, 600, 30));
 
         Cari.setText("Cari");
         Cari.addActionListener(new java.awt.event.ActionListener() {
@@ -515,7 +549,7 @@ private void loadJadwal(String keyword) {
                 CariActionPerformed(evt);
             }
         });
-        getContentPane().add(Cari, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 40, -1, -1));
+        getContentPane().add(Cari, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 40, 90, -1));
 
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/bg_login.png.png"))); // NOI18N
         jLabel11.setText("jLabel11");

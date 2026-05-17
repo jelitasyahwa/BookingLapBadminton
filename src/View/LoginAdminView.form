@@ -74,17 +74,15 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="71" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jLabel5" min="-2" pref="135" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="Username" pref="154" max="32767" attributes="0"/>
-                          <Component id="Password" pref="154" max="32767" attributes="0"/>
-                          <Component id="Kembali" pref="154" max="32767" attributes="0"/>
-                          <Component id="Login" pref="154" max="32767" attributes="0"/>
-                          <Component id="jLabel2" min="-2" pref="90" max="-2" attributes="0"/>
-                          <Component id="jLabel1" min="-2" pref="90" max="-2" attributes="0"/>
-                          <Component id="Register" pref="154" max="32767" attributes="0"/>
-                      </Group>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="Username" pref="154" max="32767" attributes="0"/>
+                      <Component id="Password" pref="154" max="32767" attributes="0"/>
+                      <Component id="Kembali" pref="154" max="32767" attributes="0"/>
+                      <Component id="Login" pref="154" max="32767" attributes="0"/>
+                      <Component id="jLabel2" min="-2" pref="90" max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" pref="90" max="-2" attributes="0"/>
+                      <Component id="Register" pref="154" max="32767" attributes="0"/>
+                      <Component id="jLabel5" alignment="1" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace pref="85" max="32767" attributes="0"/>
               </Group>
@@ -191,6 +189,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="12" style="1"/>
             </Property>
+            <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" value="Belum Punya Akun?"/>
           </Properties>
         </Component>

@@ -262,7 +262,7 @@ public class AdminView extends javax.swing.JFrame {
         Admin.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
         Admin.setForeground(new java.awt.Color(255, 255, 255));
         Admin.setText("Halo, ADMIN");
-        panelSidebar.add(Admin, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 60, 110, 32));
+        panelSidebar.add(Admin, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 110, 32));
 
         btnMenuLapangan.setFont(new java.awt.Font("Segoe UI Black", 1, 12)); // NOI18N
         btnMenuLapangan.setText("Kelola Lapangan");
@@ -283,7 +283,7 @@ public class AdminView extends javax.swing.JFrame {
         });
         panelSidebar.add(btnMenuBooking, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, 140, 30));
 
-        btnLogout.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnLogout.setFont(new java.awt.Font("Segoe UI Black", 1, 12)); // NOI18N
         btnLogout.setText("Logout");
         btnLogout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -339,7 +339,7 @@ public class AdminView extends javax.swing.JFrame {
                 btnHapusActionPerformed(evt);
             }
         });
-        jPanel7.add(btnHapus, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, 100, 30));
+        jPanel7.add(btnHapus, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, 100, 30));
 
         btnClear.setBackground(javax.swing.UIManager.getDefaults().getColor("Actions.Green"));
         btnClear.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -360,7 +360,7 @@ public class AdminView extends javax.swing.JFrame {
                 btnTambahActionPerformed(evt);
             }
         });
-        jPanel7.add(btnTambah, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, 100, 30));
+        jPanel7.add(btnTambah, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 100, 30));
 
         btnEdit.setBackground(javax.swing.UIManager.getDefaults().getColor("Actions.Yellow"));
         btnEdit.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N

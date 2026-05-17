@@ -100,8 +100,8 @@ public class BookingModel implements BookingInterface{
     }
     
     @Override
-public int hitungTotal(int durasi, int hargaPerJam) {
-    return durasi * hargaPerJam;
-}
+    public int hitungTotal(int durasi, int hargaPerJam) {
+        return durasi * hargaPerJam;
+    }
     
 }
