@@ -196,6 +196,48 @@ public class BookingController implements BookingInterface {
                 booking.getJamSelesai()
         );
     }
+    
+    public ArrayList<LapanganModel> getDataLapangan() {
+
+    ArrayList<LapanganModel> list =
+            new ArrayList<>();
+
+    try {
+
+        ResultSet rs =
+                DBLapangan.getLapangan();
+
+        while (rs.next()) {
+
+            LapanganModel lapangan =
+                    new LapanganModel();
+
+            lapangan.setIdLapangan(
+                    rs.getInt("id_lapangan")
+            );
+
+            lapangan.setNamaLapangan(
+                    rs.getString("nama_lapangan")
+            );
+
+            lapangan.setHargaPerJam(
+                    rs.getInt("harga_per_jam")
+            );
+
+            lapangan.setStatus(
+                    rs.getString("status")
+            );
+
+            list.add(lapangan);
+        }
+
+    } catch (Exception e) {
+
+        System.out.println(e);
+    }
+
+    return list;
+}
 
     // tambah booking
     public void tambahBooking(BookingModel booking) {
@@ -211,47 +253,51 @@ public class BookingController implements BookingInterface {
         );
     }
     
-    public ArrayList<LapanganModel> getDataLapangan() {
-        ArrayList<LapanganModel> list =
-                new ArrayList<>();
+   public ArrayList<LapanganModel> cariLapangan(
+        String keyword
+) {
 
-        try {
+    ArrayList<LapanganModel> list =
+            new ArrayList<>();
 
-            ResultSet rs =
-                    DBLapangan.getLapangan();
+    try {
 
-            while (rs.next()) {
-
-                LapanganModel lapangan =
-                        new LapanganModel();
-
-                lapangan.setIdLapangan(
-                        rs.getInt("id_lapangan")
+        ResultSet rs =
+                DBLapangan.cariLapangan(
+                        keyword
                 );
 
-                lapangan.setNamaLapangan(
-                        rs.getString("nama_lapangan")
-                );
+        while (rs.next()) {
 
-                lapangan.setHargaPerJam(
-                        rs.getInt("harga_per_jam")
-                );
+            LapanganModel lapangan =
+                    new LapanganModel();
 
-                lapangan.setStatus(
-                        rs.getString("status")
-                );
+            lapangan.setIdLapangan(
+                    rs.getInt("id_lapangan")
+            );
 
-                list.add(lapangan);
-            }
+            lapangan.setNamaLapangan(
+                    rs.getString("nama_lapangan")
+            );
 
-        } catch (Exception e) {
+            lapangan.setHargaPerJam(
+                    rs.getInt("harga_per_jam")
+            );
 
-            e.printStackTrace();
+            lapangan.setStatus(
+                    rs.getString("status")
+            );
+
+            list.add(lapangan);
         }
 
-        return list;
+    } catch (Exception e) {
+
+       System.out.println(e);
     }
-    
+
+    return list;
+}    
     public int getHargaLapangan(String lapangan) {        
         return DBLapangan.getHargaLapangan(
                 lapangan

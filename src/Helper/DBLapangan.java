@@ -7,7 +7,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
-
 /**
  *
  * @author ASUS
@@ -192,7 +191,9 @@ public class DBLapangan {
     return status;
 }
     // status lapangan di user
-    public static ResultSet getLapanganTersedia() {
+    public static ResultSet cariLapangan(
+        String keyword
+) {
 
     ResultSet rs = null;
 
@@ -201,19 +202,22 @@ public class DBLapangan {
         Connection conn =
                 DBHelper.getConnection();
 
-        Statement st =
-                conn.createStatement();
+            String sql =
+        "SELECT * FROM lapangan "
+        + "WHERE nama_lapangan LIKE ?";
+            
+        PreparedStatement pst =
+                conn.prepareStatement(sql);
 
-        String sql =
-                "SELECT * FROM lapangan "
-                + "WHERE status='tersedia'";
+        pst.setString(
+                1,
+              "% " + keyword + "%"        );
 
-        rs = st.executeQuery(sql);
+        rs = pst.executeQuery();
 
     } catch (Exception e) {
 
         System.out.println(e);
-
     }
 
     return rs;

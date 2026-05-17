@@ -77,7 +77,7 @@ public class UserBookingView extends javax.swing.JFrame {
                 );
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
     }
     
@@ -91,15 +91,26 @@ public class UserBookingView extends javax.swing.JFrame {
         };
     }
     
-    private ArrayList<String> loadDataLapangan(
-        DefaultTableModel model
-    ) {
+  private ArrayList<String> loadDataLapangan(
+    DefaultTableModel model,
+    String keyword
+) {
 
         ArrayList<String> listStatusLapangan =
                 new ArrayList<>();
 
-        ArrayList<LapanganModel> listLapangan =
-                bc.getDataLapangan();
+        ArrayList<LapanganModel> listLapangan;
+
+if (keyword.isEmpty()) {
+
+    listLapangan =
+            bc.getDataLapangan();
+
+} else {
+
+    listLapangan =
+            bc.cariLapangan(keyword);
+}
 
         for (LapanganModel lapangan : listLapangan) {
 
@@ -143,6 +154,40 @@ public class UserBookingView extends javax.swing.JFrame {
         }
     }
     
+private void loadJadwal() {
+    loadJadwal("");
+}
+
+private void loadJadwal(String keyword) {
+
+    DefaultTableModel model =
+            createJadwalModel();
+
+    model.addColumn("Jam");
+
+    listIdLapangan.clear();
+
+    try {
+
+        ArrayList<String> listStatusLapangan =
+                loadDataLapangan(
+                        model,
+                        keyword
+                );
+
+        loadRowJadwal(
+                model,
+                listStatusLapangan
+        );
+
+        tableJadwal.setModel(model);
+
+    } catch (Exception e) {
+
+        System.out.println(e);
+    }
+}
+    
     private String getTanggalDipilih() {
         if (jDateChooser1.getDate() == null) {
             return "";
@@ -152,21 +197,6 @@ public class UserBookingView extends javax.swing.JFrame {
         return sdf.format(jDateChooser1.getDate());
     }
     
-    private void loadJadwal() {
-        DefaultTableModel model = createJadwalModel();
-        model.addColumn("Jam");
-
-        listIdLapangan.clear();
-
-        try {
-            ArrayList<String> listStatusLapangan = loadDataLapangan(model);
-            loadRowJadwal(model, listStatusLapangan);
-            tableJadwal.setModel(model);
-        
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     private void hitungTotal() {
         try {            
@@ -249,14 +279,23 @@ public class UserBookingView extends javax.swing.JFrame {
                 );
 
                 loadJadwal();
-            }
+            
+}
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(
                     this,  e.getMessage()
             );
-        }
-    }
+}
+}
+
+    private void cariLapangan() {
+
+    String keyword =
+            CariLapangan.getText();
+
+    loadJadwal(keyword);
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -290,15 +329,20 @@ public class UserBookingView extends javax.swing.JFrame {
         lblDurasi = new javax.swing.JLabel();
         lblTotalHarga = new javax.swing.JLabel();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        CariLapangan = new javax.swing.JTextField();
+        Cari = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(javax.swing.UIManager.getDefaults().getColor("Actions.Blue"));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jTextFieldNama.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldNamaActionPerformed(evt);
             }
         });
+        getContentPane().add(jTextFieldNama, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 113, 240, 28));
 
         cbLapangan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cbLapangan.addActionListener(new java.awt.event.ActionListener() {
@@ -306,18 +350,27 @@ public class UserBookingView extends javax.swing.JFrame {
                 cbLapanganActionPerformed(evt);
             }
         });
+        getContentPane().add(cbLapangan, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 169, 240, -1));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Lapangan");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 147, 240, -1));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Tanggal Booking");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 203, 240, -1));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Jam Mulai");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 259, 240, -1));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Jam Selesai ");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 315, 240, -1));
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton1.setText("Booking");
@@ -326,6 +379,7 @@ public class UserBookingView extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 499, 240, 33));
 
         cbJamMulai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cbJamMulai.addActionListener(new java.awt.event.ActionListener() {
@@ -333,6 +387,7 @@ public class UserBookingView extends javax.swing.JFrame {
                 cbJamMulaiActionPerformed(evt);
             }
         });
+        getContentPane().add(cbJamMulai, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 281, 240, -1));
 
         cbJamSelesai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cbJamSelesai.addActionListener(new java.awt.event.ActionListener() {
@@ -340,10 +395,14 @@ public class UserBookingView extends javax.swing.JFrame {
                 cbJamSelesaiActionPerformed(evt);
             }
         });
+        getContentPane().add(cbJamSelesai, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 337, 240, -1));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Nama");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 91, 240, -1));
 
+        tableJadwal.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         tableJadwal.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -357,18 +416,26 @@ public class UserBookingView extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tableJadwal);
 
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 130, 605, 390));
+
         jLabel7.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
-        jLabel7.setText("Jadwal Ketersediaan Lapangan");
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("Cek Jadwal Ketersediaan Lapangan");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 20, 350, 42));
 
         jLabel8.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
-        jLabel8.setText("Form Booking Lap. Badminton");
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Form Booking");
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 240, 42));
 
+        jButtonAdmin.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButtonAdmin.setText("Admin");
         jButtonAdmin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonAdminActionPerformed(evt);
             }
         });
+        getContentPane().add(jButtonAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 560, 80, -1));
 
         jPanel1.setBackground(new java.awt.Color(245, 245, 245));
 
@@ -423,81 +490,36 @@ public class UserBookingView extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
                     .addComponent(lblTotalHarga))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 377, 240, -1));
 
         jDateChooser1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 jDateChooser1PropertyChange(evt);
             }
         });
+        getContentPane().add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 225, 240, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextFieldNama)
-                    .addComponent(cbLapangan, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cbJamMulai, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cbJamSelesai, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 605, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(26, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
-                    .addComponent(jButtonAdmin))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextFieldNama, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbLapangan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbJamMulai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbJamSelesai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(49, Short.MAX_VALUE))
-        );
+        CariLapangan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CariLapanganActionPerformed(evt);
+            }
+        });
+        getContentPane().add(CariLapangan, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 80, 610, 30));
+
+        Cari.setText("Cari");
+        Cari.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CariActionPerformed(evt);
+            }
+        });
+        getContentPane().add(Cari, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 40, -1, -1));
+
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/bg_login.png.png"))); // NOI18N
+        jLabel11.setText("jLabel11");
+        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 940, 610));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -544,6 +566,15 @@ public class UserBookingView extends javax.swing.JFrame {
         loadJadwal();
     }//GEN-LAST:event_jDateChooser1PropertyChange
 
+    private void CariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CariActionPerformed
+        // TODO add your handling code here:
+        cariLapangan();
+    }//GEN-LAST:event_CariActionPerformed
+
+    private void CariLapanganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CariLapanganActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CariLapanganActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -580,6 +611,8 @@ public class UserBookingView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Cari;
+    private javax.swing.JTextField CariLapangan;
     private javax.swing.JComboBox<String> cbJamMulai;
     private javax.swing.JComboBox<String> cbJamSelesai;
     private javax.swing.JComboBox<String> cbLapangan;
@@ -588,6 +621,7 @@ public class UserBookingView extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
